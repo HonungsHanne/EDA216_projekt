@@ -14,27 +14,25 @@ public class Database {
      * The database connection.
      */
     private Connection conn;
-    static String KEYWORD_PALLET_ID = "pallet_nbr";
-    static String KEYWORD_TIMESTAMP = "timestamp";
-    static String KEYWORD_BLOCKED = "blocked";
-    static String KEYWORD_RECIPE_NAME = "recipe_name";
-    static String KEYWORD_PALLET_ORDER_ID = "pallet_order_id";
-    static String KEYWORD_ORDER_ID = "order_id";
-    static String KEYWORD_AMOUNT = "amount";
-    static String KEYWORD_DELIVERY_DATE = "delivery_date";
-    static String KEYWORD_CUSTOMER_NAME = "customer_name";
-    static String KEYWORD_CUSTOMER_ADDRESS = "customer_address";
-    static String KEYWORD_MATERIAL_NAME = "material_name";
-    static String KEYWORD_TRUCK_ID = "truck_id";
-    static String TABLE_PALLETS = "pallets";
-    static String TABLE_PALLET_ORDERS = "palletorders";
-    static String TABLE_ORDERS = "orders";
-    static String TABLE_MATERIALS = "materials";
-    static String TABLE_RECIPES = "recipes";
-    static String TABLE_TRUCKS = "trucks";
-    static String TABLE_CUSTOMERS = "customers";
-    
-    
+    public static final String KEYWORD_PALLET_ID = "pallet_nbr";
+    public static final String KEYWORD_TIMESTAMP = "timestamp";
+    public static final String KEYWORD_BLOCKED = "blocked";
+    public static final String KEYWORD_RECIPE_NAME = "recipe_name";
+    public static final String KEYWORD_PALLET_ORDER_ID = "pallet_order_id";
+    public static final String KEYWORD_ORDER_ID = "order_id";
+    public static final String KEYWORD_AMOUNT = "amount";
+    public static final String KEYWORD_DELIVERY_DATE = "delivery_date";
+    public static final String KEYWORD_CUSTOMER_NAME = "customer_name";
+    public static final String KEYWORD_CUSTOMER_ADDRESS = "customer_address";
+    public static final String KEYWORD_MATERIAL_NAME = "material_name";
+    public static final String KEYWORD_TRUCK_ID = "truck_id";
+    public static final String TABLE_PALLETS = "pallets";
+    public static final String TABLE_PALLET_ORDERS = "palletorders";
+    public static final String TABLE_ORDERS = "orders";
+    public static final String TABLE_MATERIALS = "materials";
+    public static final String TABLE_RECIPES = "recipes";
+    public static final String TABLE_TRUCKS = "trucks";
+    public static final String TABLE_CUSTOMERS = "customers";
     
     private String username;
 
@@ -54,7 +52,7 @@ public class Database {
     public boolean openConnection(String filename) {
         try {
             Class.forName("org.sqlite.JDBC");
-            conn = DriverManager.getConnection("jdbc:sqlite:" + filename);
+            conn = DriverManager.getConnection("jdbc:sqlite:" + "database.db");
         } catch (SQLException e) {
         	e.printStackTrace();
             return false;
@@ -91,8 +89,8 @@ public class Database {
     	ArrayList<Pallet> temp = new ArrayList<Pallet>();
     	String sqlcommand = "SELECT * \n"
     			+ "FROM " + TABLE_PALLETS +
-    			"WHERE " + KEYWORD_PALLET_ID + " = " + pallet_id;
-    	
+    			" WHERE " + KEYWORD_PALLET_ID + " = " + pallet_id;
+    	System.out.println(sqlcommand);
     	Statement st;
     	ResultSet rs;
     	Pallet pallet;
