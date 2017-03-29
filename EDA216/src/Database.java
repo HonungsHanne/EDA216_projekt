@@ -1,0 +1,281 @@
+
+
+import java.sql.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.Date;
+
+/**
+ * Database is a class that specifies the interface to the movie
+ * database. Uses JDBC.
+ */
+public class Database {
+
+    /**
+     * The database connection.
+     */
+    private Connection conn;
+    public static final String KEYWORD_PALLET_ID = "pallet_nbr";
+    public static final String KEYWORD_TIMESTAMP = "timestamp";
+    public static final String KEYWORD_BLOCKED = "blocked";
+    public static final String KEYWORD_RECIPE_NAME = "recipe_name";
+    public static final String KEYWORD_PALLET_ORDER_ID = "pallet_order_id";
+    public static final String KEYWORD_ORDER_ID = "order_id";
+    public static final String KEYWORD_AMOUNT = "amount";
+    public static final String KEYWORD_DELIVERY_DATE = "delivery_date";
+    public static final String KEYWORD_CUSTOMER_NAME = "customer_name";
+    public static final String KEYWORD_CUSTOMER_ADDRESS = "customer_address";
+    public static final String KEYWORD_MATERIAL_NAME = "material_name";
+    public static final String KEYWORD_TRUCK_ID = "truck_id";
+    public static final String TABLE_PALLETS = "pallets";
+    public static final String TABLE_PALLET_ORDERS = "palletorders";
+    public static final String TABLE_ORDERS = "orders";
+    public static final String TABLE_MATERIALS = "materials";
+    public static final String TABLE_RECIPES = "recipes";
+    public static final String TABLE_TRUCKS = "trucks";
+    public static final String TABLE_CUSTOMERS = "customers";
+    
+    
+
+    /**
+     * Create the database interface object. Connection to the
+     * database is performed later.
+     */
+    public Database() {
+        conn = null;
+        
+    }
+
+    /**
+     * Open a connection to the database, using the specified user
+     * name and password.
+     */
+    public boolean openConnection(String filename) {
+        try {
+            Class.forName("org.sqlite.JDBC");
+            conn = DriverManager.getConnection("jdbc:sqlite:" + "database.db");
+        } catch (SQLException e) {
+        	e.printStackTrace();
+            return false;
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            return false;            
+        }
+        return true;
+    }
+
+    /**
+     * Close the connection to the database.
+     */
+    public void closeConnection() {
+        try {
+            if (conn != null) {
+                conn.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Check if the connection to the database has been established
+     * 
+     * @return true if the connection has been established
+     */
+    public boolean isConnected() {
+        return conn != null;
+    }
+    
+    public ArrayList<Pallet> getPallets() {
+    	String sql = 
+    				"SELECT *\n"
+    			+	"FROM " + TABLE_PALLETS + ";";
+    	
+    	Statement st;
+    	ResultSet rs;
+    	
+    	try {
+    		st = conn.createStatement();
+			rs = st.executeQuery(sql);
+			
+			ArrayList<Pallet> pallets = new ArrayList<>();
+			
+			while (rs.next()){
+				pallets.add(new Pallet(rs));
+			}
+			
+			return pallets;
+    	}catch (SQLException e) {
+    		e.printStackTrace();
+    	}
+    	
+		return null;
+    }
+    
+    public Pallet getPalletById(int pallet_id) {
+    	String sql =
+    				"SELECT *\n"
+    			+	"FROM " + TABLE_PALLETS + "\n"
+    			+ 	"WHERE " + KEYWORD_PALLET_ID + " = " + pallet_id + "';";
+    	
+    	Statement st;
+    	ResultSet rs;
+    	
+    	try {
+    		st = conn.createStatement();
+			rs = st.executeQuery(sql);
+			
+			if(!rs.next()) {
+				return null;
+			}
+			
+			return new Pallet(rs);
+    	}catch (SQLException e) {
+    		e.printStackTrace();
+    	}
+    	
+		return null;
+    }
+    
+    public ArrayList<Pallet> getPalletByRecipe(String recipe_name){
+    	ArrayList<Pallet> temp = new ArrayList<Pallet>();
+    	String sqlcommand = "SELECT * \n"
+    			+ "FROM " + TABLE_PALLETS + " \n WHERE " + KEYWORD_RECIPE_NAME + " = '" + recipe_name + "'";
+    	
+    	
+    	Statement st;
+    	ResultSet rs;
+    	Pallet pallet;
+    	try {
+    		st = conn.createStatement();
+    		rs = st.executeQuery(sqlcommand);
+    		while (rs.next()){
+    			pallet = new Pallet(rs);
+    			temp.add(pallet);
+    		}
+    		return temp;
+    	}catch(SQLException e){
+    		e.printStackTrace();
+    	}
+    	return null;
+    }
+    
+    public ArrayList<Pallet> getPalletsByTimespan(String start, String stop) {
+    	String sql =
+    				"SELECT *\n"
+    			+	"FROM " + TABLE_PALLETS + "\n"
+    			+	"WHERE " + KEYWORD_TIMESTAMP + " >= " + "'" + start + "'\n"
+    			+		"AND " + KEYWORD_TIMESTAMP + " <= " + "'" + stop + "';";
+    	
+    	Statement st;
+    	ResultSet rs;
+    	
+    	try {
+    		st = conn.createStatement();
+    		rs = st.executeQuery(sql);
+    		
+    		ArrayList<Pallet> pallets = new ArrayList<>();
+    		
+    		while(rs.next()) {
+    			pallets.add(new Pallet(rs));
+    		}
+    		
+    		return pallets;
+    	}catch(SQLException e){
+    		e.printStackTrace();
+    	}
+    	
+    	return null;
+    }
+    
+    public ArrayList<Pallet> getBlockedPallets() {
+    	String sql =
+    				"SELECT *\n"
+    			+	"FROM " + TABLE_PALLETS + "\n"
+    			+	"WHERE " + KEYWORD_BLOCKED + " IS TRUE;";
+    	
+    	Statement st;
+    	ResultSet rs;
+    	
+    	try {
+    		st = conn.createStatement();
+    		rs = st.executeQuery(sql);
+    		
+    		ArrayList<Pallet> pallets = new ArrayList<>();
+    		
+    		while(rs.next()) {
+    			pallets.add(new Pallet(rs));
+    		}
+    		
+    		return pallets;
+    	}catch(SQLException e){
+    		e.printStackTrace();
+    	}
+    	
+    	return null;
+    }
+    
+    public void blockPallets(String start, String stop, String recipe_name) {
+    	String sql =
+					"UPDATE " + TABLE_PALLETS + "\n"
+				+	"SET " + KEYWORD_BLOCKED + " = " + 1 + "\n"
+				+	"WHERE " + KEYWORD_TIMESTAMP + " >= " + "'" + start + "'\n"
+    			+		"AND " + KEYWORD_TIMESTAMP + " <= " + "'" + stop + "'\n"
+    			+ 		"AND " + KEYWORD_RECIPE_NAME + " = '" + recipe_name + "';";
+    	
+    	PreparedStatement st;
+    	
+    	try {
+    		conn.setAutoCommit(false);
+    		st = conn.prepareStatement(sql);
+    		
+    		int result = st.executeUpdate();
+    		
+    		if(result == 0) {
+    			conn.rollback();
+    		}
+    		
+    		else {
+    			conn.commit();
+    		}
+    		
+			conn.setAutoCommit(true);
+    	} catch (SQLException e) {
+			e.printStackTrace();
+		}
+    }
+    
+    public ArrayList<String> getDeliveredToCustomer(String customer_name){
+    	ArrayList<String> customers = new ArrayList<String>();
+    	
+    	String sql = 
+    				"	SELECT " + KEYWORD_CUSTOMER_NAME + "\n"
+    			+	"	FROM " + TABLE_CUSTOMERS + " INNER JOIN " + TABLE_ORDERS + " USING (" + KEYWORD_CUSTOMER_NAME + ", " + KEYWORD_CUSTOMER_ADDRESS + ")\n"
+    			+	" 	INNER JOIN " + TABLE_PALLET_ORDERS + " USING (" + KEYWORD_ORDER_ID + ")\n"
+    			+	" 	INNER JOIN " + TABLE_PALLETS + "USING (" + KEYWORD_PALLET_ORDER_ID + ")\n"
+    			+	" 	WHERE " + KEYWORD_CUSTOMER_NAME + " = '" + customer_name + "';";
+    	
+    	Statement st;
+    	ResultSet rs;
+    	
+    	try {
+    		st = conn.createStatement();
+    		rs = st.executeQuery(sql);
+    		
+    		while (rs.next()){
+    			customers.add(rs.getString(KEYWORD_CUSTOMER_NAME));
+    		}
+    	}catch(SQLException e){
+    		e.printStackTrace();
+    	}
+    	
+    	return customers;
+    }
+    
+    
+    
+
+
+ 
+}
