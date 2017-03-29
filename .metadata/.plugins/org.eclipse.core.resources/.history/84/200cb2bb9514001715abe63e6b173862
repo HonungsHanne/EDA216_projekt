@@ -290,9 +290,5 @@ public class Database {
 	  	return -1;
 	}
 
-    public int getSize(){
-    	int size = 0;
-    	
-    	return size;
-    }
+    /* --- insert own code here --- */
 }
