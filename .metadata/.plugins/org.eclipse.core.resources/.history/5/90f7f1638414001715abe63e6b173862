@@ -197,10 +197,6 @@ public class Database {
     	
     	return null;
     }
-    
-    public void createPallet(){
-    	
-    }
     public int createReservation(String name, String day){
     	String user = CurrentUser.instance().getCurrentUserId();
     	String sql = "INSERT INTO reservations " 

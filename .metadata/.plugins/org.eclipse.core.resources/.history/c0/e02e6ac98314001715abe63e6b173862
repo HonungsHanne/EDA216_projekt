@@ -86,22 +86,19 @@ public class Database {
         return conn != null;
     }
     
-    public ArrayList<Pallet> getPalletById(int pallet_id){
-    	ArrayList<Pallet> temp = new ArrayList<Pallet>();
+    public ArrayList<String> getPalletById(int pallet_id){
+    	ArrayList<String> temp = new ArrayList<String>();
     	String sqlcommand = "SELECT * \n"
     			+ "FROM " + TABLE_PALLETS +
     			"WHERE " + KEYWORD_PALLET_ID + " = " + pallet_id;
     	
     	Statement st;
     	ResultSet rs;
-    	Pallet pallet;
     	try {
     		st = conn.createStatement();
 			rs = st.executeQuery(sqlcommand);
 			while (rs.next()){
-				pallet = new Pallet();
-				pallet.setBlocked(rs.getBoolean(KEYWORD_BLOCKED));
-				System.out.println(pallet.isBlocked() + "hh");
+				temp.add(rs.getString("name"));
 			}
 			return temp;
 			
@@ -196,10 +193,6 @@ public class Database {
     	}
     	
     	return null;
-    }
-    
-    public void createPallet(){
-    	
     }
     public int createReservation(String name, String day){
     	String user = CurrentUser.instance().getCurrentUserId();
