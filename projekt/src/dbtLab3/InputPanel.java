@@ -33,7 +33,7 @@ public class InputPanel extends JPanel {
         for (int i = 0; i < fields.length; i++) {
             right.add(fields[i]);
         }
-
+        
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         add(left);
         add(right);

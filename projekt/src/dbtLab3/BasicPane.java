@@ -43,17 +43,39 @@ public class BasicPane extends JPanel {
         add(leftPanel, BorderLayout.WEST);
                 
         JPanel rightPanel = new JPanel();
-        rightPanel.setLayout(new BorderLayout());
-                
-        JComponent topPanel = createTopPanel();
+       
+        rightPanel.setLayout(new FlowLayout (FlowLayout.LEFT));
+        
+        JComponent topPanelOrder = createTopPanelOrder();
+        JComponent topPanelCustomer = createTopPanelCustomer(); 
+        JComponent topPanelBlocked = createTopPanelBlocked();
+        JComponent topPanelTime = createTopPanelTime();
+        JComponent topPanelPallet = createTopPanelPallet();
+        
         JComponent middlePanel = createMiddlePanel();
         JComponent bottomPanel = createBottomPanel();
-        bottomPanel.setBorder
+        
+        topPanelOrder.setAlignmentX(Component.RIGHT_ALIGNMENT);
+        topPanelCustomer.setAlignmentX(Component.RIGHT_ALIGNMENT);
+        topPanelBlocked.setAlignmentX(Component.RIGHT_ALIGNMENT);
+        topPanelTime.setAlignmentX(Component.RIGHT_ALIGNMENT);
+        topPanelPallet.setAlignmentX(Component.RIGHT_ALIGNMENT);
+       
+        
+        
+        
+       bottomPanel.setBorder
             (new CompoundBorder(new SoftBevelBorder(BevelBorder.RAISED),
                                 bottomPanel.getBorder()));
-        rightPanel.add(topPanel, BorderLayout.NORTH);
-        rightPanel.add(middlePanel, BorderLayout.CENTER);
-        rightPanel.add(bottomPanel, BorderLayout.SOUTH);
+        
+        rightPanel.add(topPanelOrder);
+        rightPanel.add(topPanelCustomer);
+        rightPanel.add(topPanelBlocked);
+        rightPanel.add(topPanelTime);
+        rightPanel.add(topPanelPallet);
+        rightPanel.add(middlePanel);
+        rightPanel.add(bottomPanel);
+        
         add(rightPanel, BorderLayout.CENTER);
     }
         
@@ -71,7 +93,20 @@ public class BasicPane extends JPanel {
      *
      * @return An empty panel.
      */
-    public JComponent createTopPanel() { 
+    public JComponent createTopPanelOrder() { 
+        return new JPanel();
+    }
+    
+    public JComponent createTopPanelBlocked() {
+        return new JPanel();
+    }
+    public JComponent createTopPanelCustomer() {
+        return new JPanel();
+    }
+    public JComponent createTopPanelTime() {
+        return new JPanel();
+    }
+    public JComponent createTopPanelPallet() {
         return new JPanel();
     }
         
