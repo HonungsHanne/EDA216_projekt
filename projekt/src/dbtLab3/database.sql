@@ -12,8 +12,8 @@ PRAGMA foreign_keys=ON;
 
 CREATE TABLE pallets (
 	pallet_nbr		INT,
-	timestamp		DATE NOT NULL,
-	blocked			BOOLEAN NOT NULL,
+	timestamp		DATE,
+	blocked			BOOLEAN DEFAULT FALSE NOT NULL,
 	recipe_name		TEXT NOT NULL,
 	pallet_order_id INT,
 		
