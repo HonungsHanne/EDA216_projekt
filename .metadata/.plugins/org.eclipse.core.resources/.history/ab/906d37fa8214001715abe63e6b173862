@@ -1,0 +1,12 @@
+package dbtLab3;
+
+import java.sql.Date;
+
+public class Pallet {
+	int pallet_nbr;
+	Date timestamp;
+	
+	
+	public Pallet(){
+	}
+}

@@ -90,7 +90,7 @@ public class Database {
     	ArrayList<String> temp = new ArrayList<String>();
     	String sqlcommand = "SELECT * \n"
     			+ "FROM " + TABLE_PALLETS +
-    			"WHERE " + KEYWORD_PALLET_ID + " = " + pallet_id;
+    			"WHERE " + KEYWORD_PALLET_ID + " = " pallet_id;
     	
     	Statement st;
     	ResultSet rs;
@@ -99,6 +99,7 @@ public class Database {
 			rs = st.executeQuery(sqlcommand);
 			while (rs.next()){
 				temp.add(rs.getString("name"));
+				
 			}
 			return temp;
 			

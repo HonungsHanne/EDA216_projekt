@@ -136,7 +136,7 @@ public class UserLoginPane extends BasicPane {
             	displayMessage("Failed to logon.");
             }
             
-            **/ //TODO HERE COMMENT
+            **/
             /* --- insert own code here --- */
             
 

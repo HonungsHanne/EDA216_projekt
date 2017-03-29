@@ -180,11 +180,11 @@ public class BookingPane extends BasicPane {
         	return;
         }
         
-        /**for(String s : db.getMovies()){
+        for(String s : db.getMovies()){
         	
         	nameListModel.addElement(s);
 
-        }**/ //TODO HERE COMMENT
+        }
         /* --- insert own code here --- */
         
     }

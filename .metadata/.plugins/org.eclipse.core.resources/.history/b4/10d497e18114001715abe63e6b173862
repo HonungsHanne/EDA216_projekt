@@ -13,27 +13,6 @@ public class Database {
      * The database connection.
      */
     private Connection conn;
-    private static String KEYWORD_PALLET_ID = "pallet_nbr";
-    private static String KEYWORD_TIMESTAMP = "timestamp";
-    private static String KEYWORD_BLOCKED = "blocked";
-    private static String KEYWORD_RECIPE_NAME = "recipe_name";
-    private static String KEYWORD_PALLET_ORDER_ID = "pallet_order_id";
-    private static String KEYWORD_ORDER_ID = "order_id";
-    private static String KEYWORD_AMOUNT = "amount";
-    private static String KEYWORD_DELIVERY_DATE = "delivery_date";
-    private static String KEYWORD_CUSTOMER_NAME = "customer_name";
-    private static String KEYWORD_CUSTOMER_ADDRESS = "customer_address";
-    private static String KEYWORD_MATERIAL_NAME = "material_name";
-    private static String KEYWORD_TRUCK_ID = "truck_id";
-    private static String TABLE_PALLETS = "pallets";
-    private static String TABLE_PALLET_ORDERS = "palletorders";
-    private static String TABLE_ORDERS = "orders";
-    private static String TABLE_MATERIALS = "materials";
-    private static String TABLE_RECIPES = "recipes";
-    private static String TABLE_TRUCKS = "trucks";
-    private static String TABLE_CUSTOMERS = "customers";
-    
-    
     
     private String username;
 
@@ -43,7 +22,6 @@ public class Database {
      */
     public Database() {
         conn = null;
-        
     }
 
     /**
@@ -55,11 +33,11 @@ public class Database {
             Class.forName("org.sqlite.JDBC");
             conn = DriverManager.getConnection("jdbc:sqlite:" + filename);
         } catch (SQLException e) {
-        	e.printStackTrace();
+            e.printStackTrace();
             return false;
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
-            return false;            
+            return false;
         }
         return true;
     }
@@ -86,11 +64,36 @@ public class Database {
         return conn != null;
     }
     
-    public ArrayList<String> getPalletById(int pallet_id){
+    public boolean login(String s){
+        String sqlcommand = "SELECT username \n" 
+        		+ "FROM users " + "WHERE username='" + s + "'";
+        
+        Statement st;
+        ResultSet rs;
+		try {
+			st = conn.createStatement();
+			rs = st.executeQuery(sqlcommand);
+			
+			if(rs.next()) {
+				username = rs.getString("username");
+				
+				return true;
+			}
+			
+			else {
+				return false;
+			}
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		}
+		
+        return false;
+    }
+    public ArrayList<String> getMovies(){
     	ArrayList<String> temp = new ArrayList<String>();
-    	String sqlcommand = "SELECT * \n"
-    			+ "FROM " + TABLE_PALLETS +
-    			"WHERE " + KEYWORD_PALLET_ID + " = " + pallet_id;
+    	String sqlcommand = "SELECT name\n"
+    			+ "FROM movies";
     	
     	Statement st;
     	ResultSet rs;
@@ -99,6 +102,7 @@ public class Database {
 			rs = st.executeQuery(sqlcommand);
 			while (rs.next()){
 				temp.add(rs.getString("name"));
+				
 			}
 			return temp;
 			

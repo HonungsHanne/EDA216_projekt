@@ -25,15 +25,6 @@ public class Database {
     private static String KEYWORD_CUSTOMER_ADDRESS = "customer_address";
     private static String KEYWORD_MATERIAL_NAME = "material_name";
     private static String KEYWORD_TRUCK_ID = "truck_id";
-    private static String TABLE_PALLETS = "pallets";
-    private static String TABLE_PALLET_ORDERS = "palletorders";
-    private static String TABLE_ORDERS = "orders";
-    private static String TABLE_MATERIALS = "materials";
-    private static String TABLE_RECIPES = "recipes";
-    private static String TABLE_TRUCKS = "trucks";
-    private static String TABLE_CUSTOMERS = "customers";
-    
-    
     
     private String username;
 
@@ -59,7 +50,7 @@ public class Database {
             return false;
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
-            return false;            
+            return false;
         }
         return true;
     }
@@ -86,11 +77,10 @@ public class Database {
         return conn != null;
     }
     
-    public ArrayList<String> getPalletById(int pallet_id){
+    public ArrayList<String> getPalletById(){
     	ArrayList<String> temp = new ArrayList<String>();
-    	String sqlcommand = "SELECT * \n"
-    			+ "FROM " + TABLE_PALLETS +
-    			"WHERE " + KEYWORD_PALLET_ID + " = " + pallet_id;
+    	String sqlcommand = "SELECT name\n"
+    			+ "FROM movies";
     	
     	Statement st;
     	ResultSet rs;
@@ -99,6 +89,7 @@ public class Database {
 			rs = st.executeQuery(sqlcommand);
 			while (rs.next()){
 				temp.add(rs.getString("name"));
+				
 			}
 			return temp;
 			

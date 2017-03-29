@@ -86,11 +86,10 @@ public class Database {
         return conn != null;
     }
     
-    public ArrayList<String> getPalletById(int pallet_id){
+    public ArrayList<String> getPalletById(){
     	ArrayList<String> temp = new ArrayList<String>();
     	String sqlcommand = "SELECT * \n"
-    			+ "FROM " + TABLE_PALLETS +
-    			"WHERE " + KEYWORD_PALLET_ID + " = " + pallet_id;
+    			+ "FROM " + TABLE_PALLETS;
     	
     	Statement st;
     	ResultSet rs;
@@ -99,6 +98,7 @@ public class Database {
 			rs = st.executeQuery(sqlcommand);
 			while (rs.next()){
 				temp.add(rs.getString("name"));
+				
 			}
 			return temp;
 			
