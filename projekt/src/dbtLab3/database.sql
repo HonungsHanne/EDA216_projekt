@@ -11,69 +11,94 @@ DROP TABLE IF EXISTS palletorders;
 PRAGMA foreign_keys=ON;
 
 CREATE TABLE pallets (
-		pallet_nbr	INT,
-		timestamp		DATE NOT NULL,
-		blocked			BOOLEAN NOT NULL,
-		recipe_name	TEXT NOT NULL,
-		pallet_order_id INT NOT NULL,
+	pallet_nbr		INT,
+	timestamp		DATE NOT NULL,
+	blocked			BOOLEAN NOT NULL,
+	recipe_name		TEXT NOT NULL,
+	pallet_order_id INT NOT NULL,
 		
-		FOREIGN KEY (recipe_name) REFERENCES recipes(recipe_name),
-		FOREIGN KEY (pallet_order_id) REFERENCES palletorders(pallet_order_id),
-		PRIMARY KEY(pallet_nbr)
+	FOREIGN KEY (recipe_name) 		REFERENCES recipes(recipe_name),
+	FOREIGN KEY (pallet_order_id) 	REFERENCES palletorders(pallet_order_id),
+	
+	PRIMARY KEY(pallet_nbr)
 );
 		
 CREATE TABLE palletorders (
-		pallet_order_id		INT NOT NULL,
-		order_id					INT NOT NULL,
-		recipe_name TEXT 	NOT NULL,
-		amount 						INT NOT NULL,
-		
-		PRIMARY KEY (pallet_order_id),
-		FOREIGN KEY (order_id) REFERENCES orders(order_id),
-		FOREIGN KEY (recipe_name) REFERENCES recipes(recipe_name)
+	pallet_order_id	INT NOT NULL,
+	order_id		INT NOT NULL,
+	recipe_name 	TEXT NOT NULL,
+	amount 			INT NOT NULL,
+			
+	FOREIGN KEY (order_id)		REFERENCES orders(order_id),
+	FOREIGN KEY (recipe_name)	REFERENCES recipes(recipe_name),
+	
+	PRIMARY KEY (pallet_order_id)
 );
 		
 CREATE TABLE orders (
-		order_id INT,
-		delivery_date DATE NOT NULL,
-		customer_name TEXT NOT NULL,
-		customer_address TEXT NOT NULL,
+	order_id 			INT,
+	delivery_date 		DATE NOT NULL,
+	customer_name 		TEXT NOT NULL,
+	customer_address 	TEXT NOT NULL,
 		
-		PRIMARY KEY (order_id),
-		FOREIGN KEY (customer_name, customer_address) REFERENCES customers(customer_name, customer_address)
-);
+	FOREIGN KEY (customer_name, customer_address) REFERENCES customers(customer_name, customer_address),
 
-CREATE TABLE recipes (
-		recipe_name TEXT NOT NULL,
-		amount DOUBLE NOT NULL,
-		material_name TEXT NOT NULL,
-		
-		PRIMARY KEY (recipe_name, material_name),
-		FOREIGN KEY (material_name) REFERENCES materials(material_name)
+	PRIMARY KEY (order_id)
 );
 
 CREATE TABLE materials (
-		material_name TEXT NOT NULL,
-		amount DOUBLE NOT NULL,
-		timestamp DATE NOT NULL,
+	material_name 	TEXT NOT NULL,
+	amount 			DOUBLE NOT NULL,
+	timestamp 		DATE NOT NULL,
 		
-		PRIMARY KEY (material_name, timestamp)
+	PRIMARY KEY (material_name)
+);
+
+CREATE TABLE recipes (
+	recipe_name		TEXT NOT NULL,
+	amount 			DOUBLE NOT NULL,
+	material_name 	TEXT NOT NULL,
+		
+	FOREIGN KEY (material_name) REFERENCES materials(material_name),
+	
+	PRIMARY KEY (recipe_name, material_name)
 );
 
 CREATE TABLE trucks (
-		truck_id INT NOT NULL,
-		pallet_order_id INT NOT NULL,
+	truck_id		INT NOT NULL,
+	pallet_order_id	INT NOT NULL,
 		
-		FOREIGN KEY (pallet_order_id),
-		PRIMARY KEY (truck_id, pallet_order_id)
+	FOREIGN KEY (pallet_order_id) REFERENCES palletorders(pallet_order_id),
+	
+	PRIMARY KEY (truck_id, pallet_order_id)
 );
 
 CREATE TABLE customers(
-		customer_address TEXT NOT NULL,
-		customer_name TEXT NOT NULL,
+	customer_address 	TEXT NOT NULL,
+	customer_name 		TEXT NOT NULL,
 		
-		PRIMARY KEY (customer_name, customer_address)
+	PRIMARY KEY (customer_name, customer_address)
 );
+
+INSERT INTO materials VALUES('Flour', 10000, '2017-03-29');
+INSERT INTO materials VALUES('Butter', 10000, '2017-03-29');
+INSERT INTO materials VALUES('Icing sugar', 10000, '2017-03-29');
+INSERT INTO materials VALUES('Roasted, chopped nuts', 10000, '2017-03-29');
+INSERT INTO materials VALUES('Fine-ground nuts', 10000, '2017-03-29');
+INSERT INTO materials VALUES('Ground, roasted nuts', 10000, '2017-03-29');
+INSERT INTO materials VALUES('Bread crumbs', 10000, '2017-03-29');
+INSERT INTO materials VALUES('Sugar', 10000, '2017-03-29');
+INSERT INTO materials VALUES('Egg whites', 10000, '2017-03-29');
+INSERT INTO materials VALUES('Chocolate', 10000, '2017-03-29');
+INSERT INTO materials VALUES('Marzipan', 10000, '2017-03-29');
+INSERT INTO materials VALUES('Eggs', 10000, '2017-03-29');
+INSERT INTO materials VALUES('Potato starch', 10000, '2017-03-29');
+INSERT INTO materials VALUES('Wheat flour', 10000, '2017-03-29');
+INSERT INTO materials VALUES('Sodium bicarbonate', 10000, '2017-03-29');
+INSERT INTO materials VALUES('Vanilla', 10000, '2017-03-29');
+INSERT INTO materials VALUES('Chopped almonds', 10000, '2017-03-29');
+INSERT INTO materials VALUES('Cinnamon', 10000, '2017-03-29');
+INSERT INTO materials VALUES('Vanilla sugar', 10000, '2017-03-29'); 
 
 INSERT INTO recipes VALUES('Nut ring', 450, 'Flour');
 INSERT INTO recipes VALUES('Nut ring', 450, 'Butter');
@@ -107,7 +132,6 @@ INSERT INTO recipes VALUES('Berliner', 50, 'Eggs');
 INSERT INTO recipes VALUES('Berliner', 5, 'Vanilla sugar');
 INSERT INTO recipes VALUES('Berliner', 50, 'Chocolate');
 
-
 INSERT INTO customers VALUES('Finkakor AB', 'Helsingborg');
 INSERT INTO customers VALUES('Småbröd AB', 'Malmö');
 INSERT INTO customers VALUES('Kaffebröd AB', 'Landskrona');
@@ -116,5 +140,3 @@ INSERT INTO customers VALUES('Kalaskakor AB', 'Trelleborg');
 INSERT INTO customers VALUES('Partykakor AB', 'Kristianstad');
 INSERT INTO customers VALUES('Gästkakor AB', 'Hässleholm');
 INSERT INTO customers VALUES('Skånekakor AB', 'Perstorp');
-
-
