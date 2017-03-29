@@ -201,29 +201,14 @@ public class Database {
     }
     
     private String getDate(){
-    	return Calendar.YEAR + "-" + Calendar.MONTH + "-" + Calendar.DATE + " " + Calendar.HOUR + ":" + Calendar.MINUTE + 10;
+    	String date = Calendar.YEAR + "-" + Calendar.MONTH + "-" + Calendar.DATE + " " + ;
+    	
+    	return date;
     }
     
     public void createPallet(String recipe_name){
     	String sql = "INSERT INTO " + TABLE_PALLETS + 
     				" VALUES(,"+ getDate() + ",, " + recipe_name + ",)";
-    	
-    	PreparedStatement st;
-    	try{
-    		conn.setAutoCommit(false);
-    		st = conn.prepareStatement(sql);
-    		int result = st.executeUpdate();
-    		
-    		if(result == 0){
-    			conn.rollback();
-    		}else{
-    			conn.commit();
-    		}
-			conn.setAutoCommit(true);
-    	}catch (SQLException e) {
-			
-			e.printStackTrace();
-		}
     }
     public int createReservation(String name, String day){
     	String user = CurrentUser.instance().getCurrentUserId();
@@ -249,6 +234,7 @@ public class Database {
     					
     					if(result == 0) {
     						conn.rollback();
+ 
     					}
     					
     					else {

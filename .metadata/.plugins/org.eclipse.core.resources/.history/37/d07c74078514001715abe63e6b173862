@@ -1,7 +1,6 @@
 package dbtLab3;
 
 import java.sql.*;
-import java.sql.Date;
 import java.util.*;
 
 /**
@@ -200,35 +199,13 @@ public class Database {
     	return null;
     }
     
-    private String getDate(){
-    	return Calendar.YEAR + "-" + Calendar.MONTH + "-" + Calendar.DATE + " " + Calendar.HOUR + ":" + Calendar.MINUTE + 10;
-    }
-    
-    public void createPallet(String recipe_name){
-    	String sql = "INSERT INTO " + TABLE_PALLETS + 
-    				" VALUES(,"+ getDate() + ",, " + recipe_name + ",)";
+    public void createPallet(String recipe_name, ){
     	
-    	PreparedStatement st;
-    	try{
-    		conn.setAutoCommit(false);
-    		st = conn.prepareStatement(sql);
-    		int result = st.executeUpdate();
-    		
-    		if(result == 0){
-    			conn.rollback();
-    		}else{
-    			conn.commit();
-    		}
-			conn.setAutoCommit(true);
-    	}catch (SQLException e) {
-			
-			e.printStackTrace();
-		}
     }
     public int createReservation(String name, String day){
     	String user = CurrentUser.instance().getCurrentUserId();
-    	
-    	String sql = "INSERT INTO reservations "   
+    	String sql = "INSERT INTO reservations " 
+  
     				+ "VALUES(null, '" + name + "', '" + day+ "', '" + user + "')";
 
     	String sql2 = "SELECT reservation_number\n"
@@ -249,6 +226,7 @@ public class Database {
     					
     					if(result == 0) {
     						conn.rollback();
+ 
     					}
     					
     					else {
