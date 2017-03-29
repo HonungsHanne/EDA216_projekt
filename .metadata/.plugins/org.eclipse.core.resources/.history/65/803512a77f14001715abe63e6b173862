@@ -60,7 +60,7 @@ public class BasicPane extends JPanel {
         topPanelBlocked.setAlignmentX(Component.RIGHT_ALIGNMENT);
         topPanelTime.setAlignmentX(Component.RIGHT_ALIGNMENT);
         topPanelPallet.setAlignmentX(Component.RIGHT_ALIGNMENT);
-        
+        bottomPanel.setAlignmentX(LEFT_ALIGNMENT);
        
         
         

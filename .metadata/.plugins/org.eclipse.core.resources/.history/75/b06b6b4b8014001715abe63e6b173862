@@ -51,7 +51,6 @@ public class MovieGUI {
 
         frame.setSize(500, 400);
         frame.setVisible(true);
-        frame.setResizable(false);
 
         userLoginPane.displayMessage("Connecting to database ...");
                 

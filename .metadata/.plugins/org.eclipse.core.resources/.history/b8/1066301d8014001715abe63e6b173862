@@ -93,7 +93,7 @@ public class UserLoginPane extends BasicPane {
     public JComponent createBottomPanel() {
         JButton[] buttons = new JButton[1];
         buttons[0] = new JButton("Search");
-        buttons[0].setPreferredSize(new Dimension(440, 50));
+        buttons[0].setPreferredSize(new Dimension(420, 50));
         ActionHandler actHand = new ActionHandler();
         fields[USER_ID].addActionListener(actHand);
         return new ButtonAndMessagePanel(buttons, messageLabel, actHand);

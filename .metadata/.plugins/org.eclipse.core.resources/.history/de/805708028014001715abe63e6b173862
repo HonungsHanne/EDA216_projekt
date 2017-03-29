@@ -1,8 +1,6 @@
 package dbtLab3;
 
 import javax.swing.*;
-
-import java.awt.Dimension;
 import java.awt.event.*;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -93,7 +91,6 @@ public class UserLoginPane extends BasicPane {
     public JComponent createBottomPanel() {
         JButton[] buttons = new JButton[1];
         buttons[0] = new JButton("Search");
-        buttons[0].setPreferredSize(new Dimension(440, 50));
         ActionHandler actHand = new ActionHandler();
         fields[USER_ID].addActionListener(actHand);
         return new ButtonAndMessagePanel(buttons, messageLabel, actHand);
