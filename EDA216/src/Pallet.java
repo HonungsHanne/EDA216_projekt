@@ -18,8 +18,8 @@ public class Pallet {
 		recipe_name = rs.getString(Database.KEYWORD_RECIPE_NAME);
 	}
 	
-	public void print() {
-		System.out.println("pallet_nbr: " + pallet_nbr + " pallet_order_id: " + pallet_order_id + " timestamp: " + timestamp + " blocked: " + blocked + " recipe_name: " + recipe_name);
+	public String toString() {
+		return ("(" + pallet_nbr + ", " + pallet_order_id + ", " + timestamp + ", " + blocked + ", " + recipe_name +")");
 	}
 	
 	public int getPallet_nbr() {

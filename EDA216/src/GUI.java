@@ -5,9 +5,15 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.List;
+
+import java.util.ArrayList;
+
 import org.eclipse.jface.viewers.ListViewer;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 
 public class GUI {
 	protected Shell shell;
@@ -17,11 +23,14 @@ public class GUI {
 	private Text text_2;
 	private Text text_3;
 	private Text text_4;
+	private Database db;
 	
 	public static void main(String[] args) {
+		
 		try {
 			GUI window = new GUI();
 			window.open();
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -29,6 +38,10 @@ public class GUI {
 	
 	public void open() {
 		Display display = Display.getDefault();
+		db = new Database();
+		if (db.openConnection("database.db")) {
+			System.out.println("Connected to db");
+		}
 		createContents();
 		shell.open();
 		shell.layout();
@@ -41,9 +54,14 @@ public class GUI {
 	
 	protected void createContents() {
 		shell = new Shell();
-		shell.setSize(450, 300);
+		shell.setSize(450, 369);
 		shell.setText("SWT Application");
 		shell.setLayout(null);
+		
+		ListViewer listViewer = new ListViewer(shell, SWT.BORDER | SWT.V_SCROLL);
+		List list = listViewer.getList();
+		list.setItems(new String[] {});
+		list.setBounds(10, 185, 414, 125);
 		
 		Label lblPalletId = new Label(shell, SWT.NONE);
 		lblPalletId.setBounds(10, 10, 43, 15);
@@ -54,24 +72,27 @@ public class GUI {
 		
 		Label lblNewLabel = new Label(shell, SWT.NONE);
 		lblNewLabel.setBounds(10, 40, 102, 15);
-		lblNewLabel.setText("Blocked (timespan)");
+		lblNewLabel.setText("Produced (time)");
 		
 		txtStartTime = new Text(shell, SWT.BORDER);
 		txtStartTime.setToolTipText("Date (YYYY-MM-DD hh:mm:ss)");
-		txtStartTime.setBounds(117, 40, 102, 18);
+		txtStartTime.setBounds(117, 40, 117, 18);
 		
 		Label label = new Label(shell, SWT.NONE);
-		label.setBounds(240, 40, 23, 15);
+		label.setBounds(240, 40, 5, 15);
 		label.setText("-");
 		
 		text_1 = new Text(shell, SWT.BORDER);
 		text_1.setToolTipText("Date (YYYY-MM-DD hh:mm:ss)");
-		text_1.setBounds(269, 40, 102, 18);
+		text_1.setBounds(250, 40, 121, 18);
 		
 		Button btnSearch = new Button(shell, SWT.NONE);
 		btnSearch.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
+				Pallet p = db.getPalletById(Integer.parseInt(text.getText()));
+				List list = listViewer.getList();
+				list.setItems(new String[] {p.toString()});
 			}
 		});
 		btnSearch.setBounds(378, 10, 46, 18);
@@ -81,6 +102,12 @@ public class GUI {
 		button.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
+				ArrayList<Pallet> p_list = db.getPalletsByTimespan(txtStartTime.getText(), text_1.getText());
+				String[] tuples = new String[p_list.size()];
+				for(int i = 0; i < p_list.size(); i++){
+					tuples[i] = p_list.get(i).toString();
+				}
+				listViewer.getList().setItems(tuples);
 			}
 		});
 		button.setText("Search");
@@ -97,6 +124,12 @@ public class GUI {
 		button_1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
+				ArrayList<Pallet> p_list = db.getPalletByRecipe(text_2.getText());
+				String[] tuples = new String[p_list.size()];
+				for(int i = 0; i < p_list.size(); i++){
+					tuples[i] = p_list.get(i).toString();
+				}
+				listViewer.getList().setItems(tuples);
 			}
 		});
 		button_1.setText("Search");
@@ -113,8 +146,15 @@ public class GUI {
 		button_2.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
+				ArrayList<Pallet> p_list = db.getDeliveredToCustomer(text_3.getText());
+				String[] tuples = new String[p_list.size()];
+				for(int i = 0; i < p_list.size(); i++){
+					tuples[i] = p_list.get(i).toString();
+				}
+				listViewer.getList().setItems(tuples);
 			}
-		});
+			}
+		);
 		button_2.setText("Search");
 		button_2.setBounds(378, 101, 46, 18);
 		
@@ -126,18 +166,28 @@ public class GUI {
 		text_4.setBounds(117, 133, 254, 18);
 		
 		Button button_3 = new Button(shell, SWT.NONE);
+		
 		button_3.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
+				ArrayList<Pallet> p_list = db.getBlockedPallets();
+				String[] tuples = new String[p_list.size()];
+				for(int i = 0; i < p_list.size(); i++){
+					tuples[i] = p_list.get(i).toString();
+				}
+				listViewer.getList().setItems(tuples);
+			
 			}
 		});
 		button_3.setText("Search");
 		button_3.setBounds(378, 133, 46, 18);
+					
+		Menu menu = new Menu(shell, SWT.BAR);
+		shell.setMenuBar(menu);
 		
-		ListViewer listViewer = new ListViewer(shell, SWT.BORDER | SWT.V_SCROLL);
-		List list = listViewer.getList();
-		list.setItems(new String[] {"Hej", "Tv\u00E5", "Tre", "Bajs", "Hampus", "Anus", "\u00C4r", "Inte", "Trevligt", "Ibland", "Tror", "Jag", "Hanne", "Vet"});
-		list.setBounds(10, 161, 414, 90);
+		Label lblpalletNumberPallet = new Label(shell, SWT.NONE);
+		lblpalletNumberPallet.setBounds(10, 164, 414, 15);
+		lblpalletNumberPallet.setText("(Pallet number, Pallet Order Id, Timestamp, Blocked, Product name)");
 
 	}
 }

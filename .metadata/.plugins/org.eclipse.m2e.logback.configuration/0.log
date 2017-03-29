@@ -20,3 +20,167 @@ Caused by: org.eclipse.aether.transfer.ArtifactNotFoundException: Could not find
 	at org.eclipse.aether.internal.impl.DefaultArtifactResolver.performDownloads(DefaultArtifactResolver.java:520) ~[na:na]
 	at org.eclipse.aether.internal.impl.DefaultArtifactResolver.resolve(DefaultArtifactResolver.java:421) ~[na:na]
 	... 8 common frames omitted
+2017-03-29 21:41:22,340 [main] INFO  c.g.t.t.d.PublishedGradleVersions - Gradle version information cache file is not out-of-date. No remote download required.
+2017-03-29 21:44:07,028 [Worker-12] WARN  o.e.r.models.ModelRepository - Failed to download org.eclipse.swt:org.eclipse.swt.win32.win32.x86:call:zip:3.0.0
+org.eclipse.aether.resolution.ArtifactResolutionException: Failure to find org.eclipse.swt:org.eclipse.swt.win32.win32.x86:zip:call:3.0.0-SNAPSHOT in http://download.eclipse.org/recommenders/models/mars/ was cached in the local repository, resolution will not be reattempted until the update interval of models has elapsed or updates are forced
+	at org.eclipse.aether.internal.impl.DefaultArtifactResolver.resolve(DefaultArtifactResolver.java:444) ~[na:na]
+	at org.eclipse.aether.internal.impl.DefaultArtifactResolver.resolveArtifacts(DefaultArtifactResolver.java:246) ~[na:na]
+	at org.eclipse.aether.internal.impl.DefaultArtifactResolver.resolveArtifact(DefaultArtifactResolver.java:223) ~[na:na]
+	at org.eclipse.aether.internal.impl.DefaultRepositorySystem.resolveArtifact(DefaultRepositorySystem.java:294) ~[na:na]
+	at org.eclipse.recommenders.models.ModelRepository.resolveInternal(ModelRepository.java:192) [org.eclipse.recommenders.models_2.2.4.v20150914-0857.jar:na]
+	at org.eclipse.recommenders.models.ModelRepository.resolve(ModelRepository.java:174) [org.eclipse.recommenders.models_2.2.4.v20150914-0857.jar:na]
+	at org.eclipse.recommenders.internal.models.rcp.EclipseModelRepository.resolve(EclipseModelRepository.java:167) [org.eclipse.recommenders.models.rcp_2.2.4.v20150914-0857.jar:na]
+	at org.eclipse.recommenders.internal.models.rcp.DownloadModelArchiveJob.run(DownloadModelArchiveJob.java:76) [org.eclipse.recommenders.models.rcp_2.2.4.v20150914-0857.jar:na]
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:55) [org.eclipse.core.jobs_3.7.0.v20150330-2103.jar:na]
+Caused by: org.eclipse.aether.transfer.ArtifactNotFoundException: Failure to find org.eclipse.swt:org.eclipse.swt.win32.win32.x86:zip:call:3.0.0-SNAPSHOT in http://download.eclipse.org/recommenders/models/mars/ was cached in the local repository, resolution will not be reattempted until the update interval of models has elapsed or updates are forced
+	at org.eclipse.aether.internal.impl.DefaultUpdateCheckManager.newException(DefaultUpdateCheckManager.java:231) ~[na:na]
+	at org.eclipse.aether.internal.impl.DefaultUpdateCheckManager.checkArtifact(DefaultUpdateCheckManager.java:206) ~[na:na]
+	at org.eclipse.aether.internal.impl.DefaultArtifactResolver.gatherDownloads(DefaultArtifactResolver.java:585) ~[na:na]
+	at org.eclipse.aether.internal.impl.DefaultArtifactResolver.performDownloads(DefaultArtifactResolver.java:503) ~[na:na]
+	at org.eclipse.aether.internal.impl.DefaultArtifactResolver.resolve(DefaultArtifactResolver.java:421) ~[na:na]
+	... 8 common frames omitted
+2017-03-29 21:44:13,592 [Worker-5] WARN  o.e.r.models.ModelRepository - Failed to download org.eclipse.swt:org.eclipse.swt.win32.win32.x86:call:zip:3.0.0
+org.eclipse.aether.resolution.ArtifactResolutionException: Failure to find org.eclipse.swt:org.eclipse.swt.win32.win32.x86:zip:call:3.0.0-SNAPSHOT in http://download.eclipse.org/recommenders/models/mars/ was cached in the local repository, resolution will not be reattempted until the update interval of models has elapsed or updates are forced
+	at org.eclipse.aether.internal.impl.DefaultArtifactResolver.resolve(DefaultArtifactResolver.java:444) ~[na:na]
+	at org.eclipse.aether.internal.impl.DefaultArtifactResolver.resolveArtifacts(DefaultArtifactResolver.java:246) ~[na:na]
+	at org.eclipse.aether.internal.impl.DefaultArtifactResolver.resolveArtifact(DefaultArtifactResolver.java:223) ~[na:na]
+	at org.eclipse.aether.internal.impl.DefaultRepositorySystem.resolveArtifact(DefaultRepositorySystem.java:294) ~[na:na]
+	at org.eclipse.recommenders.models.ModelRepository.resolveInternal(ModelRepository.java:192) [org.eclipse.recommenders.models_2.2.4.v20150914-0857.jar:na]
+	at org.eclipse.recommenders.models.ModelRepository.resolve(ModelRepository.java:174) [org.eclipse.recommenders.models_2.2.4.v20150914-0857.jar:na]
+	at org.eclipse.recommenders.internal.models.rcp.EclipseModelRepository.resolve(EclipseModelRepository.java:167) [org.eclipse.recommenders.models.rcp_2.2.4.v20150914-0857.jar:na]
+	at org.eclipse.recommenders.internal.models.rcp.DownloadModelArchiveJob.run(DownloadModelArchiveJob.java:76) [org.eclipse.recommenders.models.rcp_2.2.4.v20150914-0857.jar:na]
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:55) [org.eclipse.core.jobs_3.7.0.v20150330-2103.jar:na]
+Caused by: org.eclipse.aether.transfer.ArtifactNotFoundException: Failure to find org.eclipse.swt:org.eclipse.swt.win32.win32.x86:zip:call:3.0.0-SNAPSHOT in http://download.eclipse.org/recommenders/models/mars/ was cached in the local repository, resolution will not be reattempted until the update interval of models has elapsed or updates are forced
+	at org.eclipse.aether.internal.impl.DefaultUpdateCheckManager.newException(DefaultUpdateCheckManager.java:231) ~[na:na]
+	at org.eclipse.aether.internal.impl.DefaultUpdateCheckManager.checkArtifact(DefaultUpdateCheckManager.java:206) ~[na:na]
+	at org.eclipse.aether.internal.impl.DefaultArtifactResolver.gatherDownloads(DefaultArtifactResolver.java:585) ~[na:na]
+	at org.eclipse.aether.internal.impl.DefaultArtifactResolver.performDownloads(DefaultArtifactResolver.java:503) ~[na:na]
+	at org.eclipse.aether.internal.impl.DefaultArtifactResolver.resolve(DefaultArtifactResolver.java:421) ~[na:na]
+	... 8 common frames omitted
+2017-03-29 21:44:49,643 [Worker-15] WARN  o.e.r.models.ModelRepository - Failed to download org.eclipse.swt:org.eclipse.swt.win32.win32.x86:call:zip:3.0.0
+org.eclipse.aether.resolution.ArtifactResolutionException: Failure to find org.eclipse.swt:org.eclipse.swt.win32.win32.x86:zip:call:3.0.0-SNAPSHOT in http://download.eclipse.org/recommenders/models/mars/ was cached in the local repository, resolution will not be reattempted until the update interval of models has elapsed or updates are forced
+	at org.eclipse.aether.internal.impl.DefaultArtifactResolver.resolve(DefaultArtifactResolver.java:444) ~[na:na]
+	at org.eclipse.aether.internal.impl.DefaultArtifactResolver.resolveArtifacts(DefaultArtifactResolver.java:246) ~[na:na]
+	at org.eclipse.aether.internal.impl.DefaultArtifactResolver.resolveArtifact(DefaultArtifactResolver.java:223) ~[na:na]
+	at org.eclipse.aether.internal.impl.DefaultRepositorySystem.resolveArtifact(DefaultRepositorySystem.java:294) ~[na:na]
+	at org.eclipse.recommenders.models.ModelRepository.resolveInternal(ModelRepository.java:192) [org.eclipse.recommenders.models_2.2.4.v20150914-0857.jar:na]
+	at org.eclipse.recommenders.models.ModelRepository.resolve(ModelRepository.java:174) [org.eclipse.recommenders.models_2.2.4.v20150914-0857.jar:na]
+	at org.eclipse.recommenders.internal.models.rcp.EclipseModelRepository.resolve(EclipseModelRepository.java:167) [org.eclipse.recommenders.models.rcp_2.2.4.v20150914-0857.jar:na]
+	at org.eclipse.recommenders.internal.models.rcp.DownloadModelArchiveJob.run(DownloadModelArchiveJob.java:76) [org.eclipse.recommenders.models.rcp_2.2.4.v20150914-0857.jar:na]
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:55) [org.eclipse.core.jobs_3.7.0.v20150330-2103.jar:na]
+Caused by: org.eclipse.aether.transfer.ArtifactNotFoundException: Failure to find org.eclipse.swt:org.eclipse.swt.win32.win32.x86:zip:call:3.0.0-SNAPSHOT in http://download.eclipse.org/recommenders/models/mars/ was cached in the local repository, resolution will not be reattempted until the update interval of models has elapsed or updates are forced
+	at org.eclipse.aether.internal.impl.DefaultUpdateCheckManager.newException(DefaultUpdateCheckManager.java:231) ~[na:na]
+	at org.eclipse.aether.internal.impl.DefaultUpdateCheckManager.checkArtifact(DefaultUpdateCheckManager.java:206) ~[na:na]
+	at org.eclipse.aether.internal.impl.DefaultArtifactResolver.gatherDownloads(DefaultArtifactResolver.java:585) ~[na:na]
+	at org.eclipse.aether.internal.impl.DefaultArtifactResolver.performDownloads(DefaultArtifactResolver.java:503) ~[na:na]
+	at org.eclipse.aether.internal.impl.DefaultArtifactResolver.resolve(DefaultArtifactResolver.java:421) ~[na:na]
+	... 8 common frames omitted
+2017-03-29 21:52:01,554 [main] INFO  c.g.t.t.d.PublishedGradleVersions - Gradle version information cache file is not out-of-date. No remote download required.
+2017-03-29 22:07:19,880 [Worker-3] WARN  o.e.r.models.ModelRepository - Failed to download org.eclipse.swt:org.eclipse.swt.win32.win32.x86:call:zip:3.0.0
+org.eclipse.aether.resolution.ArtifactResolutionException: Failure to find org.eclipse.swt:org.eclipse.swt.win32.win32.x86:zip:call:3.0.0-SNAPSHOT in http://download.eclipse.org/recommenders/models/mars/ was cached in the local repository, resolution will not be reattempted until the update interval of models has elapsed or updates are forced
+	at org.eclipse.aether.internal.impl.DefaultArtifactResolver.resolve(DefaultArtifactResolver.java:444) ~[na:na]
+	at org.eclipse.aether.internal.impl.DefaultArtifactResolver.resolveArtifacts(DefaultArtifactResolver.java:246) ~[na:na]
+	at org.eclipse.aether.internal.impl.DefaultArtifactResolver.resolveArtifact(DefaultArtifactResolver.java:223) ~[na:na]
+	at org.eclipse.aether.internal.impl.DefaultRepositorySystem.resolveArtifact(DefaultRepositorySystem.java:294) ~[na:na]
+	at org.eclipse.recommenders.models.ModelRepository.resolveInternal(ModelRepository.java:192) [org.eclipse.recommenders.models_2.2.4.v20150914-0857.jar:na]
+	at org.eclipse.recommenders.models.ModelRepository.resolve(ModelRepository.java:174) [org.eclipse.recommenders.models_2.2.4.v20150914-0857.jar:na]
+	at org.eclipse.recommenders.internal.models.rcp.EclipseModelRepository.resolve(EclipseModelRepository.java:167) [org.eclipse.recommenders.models.rcp_2.2.4.v20150914-0857.jar:na]
+	at org.eclipse.recommenders.internal.models.rcp.DownloadModelArchiveJob.run(DownloadModelArchiveJob.java:76) [org.eclipse.recommenders.models.rcp_2.2.4.v20150914-0857.jar:na]
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:55) [org.eclipse.core.jobs_3.7.0.v20150330-2103.jar:na]
+Caused by: org.eclipse.aether.transfer.ArtifactNotFoundException: Failure to find org.eclipse.swt:org.eclipse.swt.win32.win32.x86:zip:call:3.0.0-SNAPSHOT in http://download.eclipse.org/recommenders/models/mars/ was cached in the local repository, resolution will not be reattempted until the update interval of models has elapsed or updates are forced
+	at org.eclipse.aether.internal.impl.DefaultUpdateCheckManager.newException(DefaultUpdateCheckManager.java:231) ~[na:na]
+	at org.eclipse.aether.internal.impl.DefaultUpdateCheckManager.checkArtifact(DefaultUpdateCheckManager.java:206) ~[na:na]
+	at org.eclipse.aether.internal.impl.DefaultArtifactResolver.gatherDownloads(DefaultArtifactResolver.java:585) ~[na:na]
+	at org.eclipse.aether.internal.impl.DefaultArtifactResolver.performDownloads(DefaultArtifactResolver.java:503) ~[na:na]
+	at org.eclipse.aether.internal.impl.DefaultArtifactResolver.resolve(DefaultArtifactResolver.java:421) ~[na:na]
+	... 8 common frames omitted
+2017-03-29 22:07:32,215 [Worker-9] WARN  o.e.r.models.ModelRepository - Failed to download org.eclipse.swt:org.eclipse.swt.win32.win32.x86:call:zip:3.0.0
+org.eclipse.aether.resolution.ArtifactResolutionException: Failure to find org.eclipse.swt:org.eclipse.swt.win32.win32.x86:zip:call:3.0.0-SNAPSHOT in http://download.eclipse.org/recommenders/models/mars/ was cached in the local repository, resolution will not be reattempted until the update interval of models has elapsed or updates are forced
+	at org.eclipse.aether.internal.impl.DefaultArtifactResolver.resolve(DefaultArtifactResolver.java:444) ~[na:na]
+	at org.eclipse.aether.internal.impl.DefaultArtifactResolver.resolveArtifacts(DefaultArtifactResolver.java:246) ~[na:na]
+	at org.eclipse.aether.internal.impl.DefaultArtifactResolver.resolveArtifact(DefaultArtifactResolver.java:223) ~[na:na]
+	at org.eclipse.aether.internal.impl.DefaultRepositorySystem.resolveArtifact(DefaultRepositorySystem.java:294) ~[na:na]
+	at org.eclipse.recommenders.models.ModelRepository.resolveInternal(ModelRepository.java:192) [org.eclipse.recommenders.models_2.2.4.v20150914-0857.jar:na]
+	at org.eclipse.recommenders.models.ModelRepository.resolve(ModelRepository.java:174) [org.eclipse.recommenders.models_2.2.4.v20150914-0857.jar:na]
+	at org.eclipse.recommenders.internal.models.rcp.EclipseModelRepository.resolve(EclipseModelRepository.java:167) [org.eclipse.recommenders.models.rcp_2.2.4.v20150914-0857.jar:na]
+	at org.eclipse.recommenders.internal.models.rcp.DownloadModelArchiveJob.run(DownloadModelArchiveJob.java:76) [org.eclipse.recommenders.models.rcp_2.2.4.v20150914-0857.jar:na]
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:55) [org.eclipse.core.jobs_3.7.0.v20150330-2103.jar:na]
+Caused by: org.eclipse.aether.transfer.ArtifactNotFoundException: Failure to find org.eclipse.swt:org.eclipse.swt.win32.win32.x86:zip:call:3.0.0-SNAPSHOT in http://download.eclipse.org/recommenders/models/mars/ was cached in the local repository, resolution will not be reattempted until the update interval of models has elapsed or updates are forced
+	at org.eclipse.aether.internal.impl.DefaultUpdateCheckManager.newException(DefaultUpdateCheckManager.java:231) ~[na:na]
+	at org.eclipse.aether.internal.impl.DefaultUpdateCheckManager.checkArtifact(DefaultUpdateCheckManager.java:206) ~[na:na]
+	at org.eclipse.aether.internal.impl.DefaultArtifactResolver.gatherDownloads(DefaultArtifactResolver.java:585) ~[na:na]
+	at org.eclipse.aether.internal.impl.DefaultArtifactResolver.performDownloads(DefaultArtifactResolver.java:503) ~[na:na]
+	at org.eclipse.aether.internal.impl.DefaultArtifactResolver.resolve(DefaultArtifactResolver.java:421) ~[na:na]
+	... 8 common frames omitted
+2017-03-29 22:11:09,190 [Worker-9] WARN  o.e.r.models.ModelRepository - Failed to download org.eclipse.swt:org.eclipse.swt.win32.win32.x86:call:zip:3.0.0
+org.eclipse.aether.resolution.ArtifactResolutionException: Failure to find org.eclipse.swt:org.eclipse.swt.win32.win32.x86:zip:call:3.0.0-SNAPSHOT in http://download.eclipse.org/recommenders/models/mars/ was cached in the local repository, resolution will not be reattempted until the update interval of models has elapsed or updates are forced
+	at org.eclipse.aether.internal.impl.DefaultArtifactResolver.resolve(DefaultArtifactResolver.java:444) ~[na:na]
+	at org.eclipse.aether.internal.impl.DefaultArtifactResolver.resolveArtifacts(DefaultArtifactResolver.java:246) ~[na:na]
+	at org.eclipse.aether.internal.impl.DefaultArtifactResolver.resolveArtifact(DefaultArtifactResolver.java:223) ~[na:na]
+	at org.eclipse.aether.internal.impl.DefaultRepositorySystem.resolveArtifact(DefaultRepositorySystem.java:294) ~[na:na]
+	at org.eclipse.recommenders.models.ModelRepository.resolveInternal(ModelRepository.java:192) [org.eclipse.recommenders.models_2.2.4.v20150914-0857.jar:na]
+	at org.eclipse.recommenders.models.ModelRepository.resolve(ModelRepository.java:174) [org.eclipse.recommenders.models_2.2.4.v20150914-0857.jar:na]
+	at org.eclipse.recommenders.internal.models.rcp.EclipseModelRepository.resolve(EclipseModelRepository.java:167) [org.eclipse.recommenders.models.rcp_2.2.4.v20150914-0857.jar:na]
+	at org.eclipse.recommenders.internal.models.rcp.DownloadModelArchiveJob.run(DownloadModelArchiveJob.java:76) [org.eclipse.recommenders.models.rcp_2.2.4.v20150914-0857.jar:na]
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:55) [org.eclipse.core.jobs_3.7.0.v20150330-2103.jar:na]
+Caused by: org.eclipse.aether.transfer.ArtifactNotFoundException: Failure to find org.eclipse.swt:org.eclipse.swt.win32.win32.x86:zip:call:3.0.0-SNAPSHOT in http://download.eclipse.org/recommenders/models/mars/ was cached in the local repository, resolution will not be reattempted until the update interval of models has elapsed or updates are forced
+	at org.eclipse.aether.internal.impl.DefaultUpdateCheckManager.newException(DefaultUpdateCheckManager.java:231) ~[na:na]
+	at org.eclipse.aether.internal.impl.DefaultUpdateCheckManager.checkArtifact(DefaultUpdateCheckManager.java:206) ~[na:na]
+	at org.eclipse.aether.internal.impl.DefaultArtifactResolver.gatherDownloads(DefaultArtifactResolver.java:585) ~[na:na]
+	at org.eclipse.aether.internal.impl.DefaultArtifactResolver.performDownloads(DefaultArtifactResolver.java:503) ~[na:na]
+	at org.eclipse.aether.internal.impl.DefaultArtifactResolver.resolve(DefaultArtifactResolver.java:421) ~[na:na]
+	... 8 common frames omitted
+2017-03-29 22:14:03,511 [Worker-0] WARN  o.e.r.models.ModelRepository - Failed to download org.eclipse.swt:org.eclipse.swt.win32.win32.x86:call:zip:3.0.0
+org.eclipse.aether.resolution.ArtifactResolutionException: Failure to find org.eclipse.swt:org.eclipse.swt.win32.win32.x86:zip:call:3.0.0-SNAPSHOT in http://download.eclipse.org/recommenders/models/mars/ was cached in the local repository, resolution will not be reattempted until the update interval of models has elapsed or updates are forced
+	at org.eclipse.aether.internal.impl.DefaultArtifactResolver.resolve(DefaultArtifactResolver.java:444) ~[na:na]
+	at org.eclipse.aether.internal.impl.DefaultArtifactResolver.resolveArtifacts(DefaultArtifactResolver.java:246) ~[na:na]
+	at org.eclipse.aether.internal.impl.DefaultArtifactResolver.resolveArtifact(DefaultArtifactResolver.java:223) ~[na:na]
+	at org.eclipse.aether.internal.impl.DefaultRepositorySystem.resolveArtifact(DefaultRepositorySystem.java:294) ~[na:na]
+	at org.eclipse.recommenders.models.ModelRepository.resolveInternal(ModelRepository.java:192) [org.eclipse.recommenders.models_2.2.4.v20150914-0857.jar:na]
+	at org.eclipse.recommenders.models.ModelRepository.resolve(ModelRepository.java:174) [org.eclipse.recommenders.models_2.2.4.v20150914-0857.jar:na]
+	at org.eclipse.recommenders.internal.models.rcp.EclipseModelRepository.resolve(EclipseModelRepository.java:167) [org.eclipse.recommenders.models.rcp_2.2.4.v20150914-0857.jar:na]
+	at org.eclipse.recommenders.internal.models.rcp.DownloadModelArchiveJob.run(DownloadModelArchiveJob.java:76) [org.eclipse.recommenders.models.rcp_2.2.4.v20150914-0857.jar:na]
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:55) [org.eclipse.core.jobs_3.7.0.v20150330-2103.jar:na]
+Caused by: org.eclipse.aether.transfer.ArtifactNotFoundException: Failure to find org.eclipse.swt:org.eclipse.swt.win32.win32.x86:zip:call:3.0.0-SNAPSHOT in http://download.eclipse.org/recommenders/models/mars/ was cached in the local repository, resolution will not be reattempted until the update interval of models has elapsed or updates are forced
+	at org.eclipse.aether.internal.impl.DefaultUpdateCheckManager.newException(DefaultUpdateCheckManager.java:231) ~[na:na]
+	at org.eclipse.aether.internal.impl.DefaultUpdateCheckManager.checkArtifact(DefaultUpdateCheckManager.java:206) ~[na:na]
+	at org.eclipse.aether.internal.impl.DefaultArtifactResolver.gatherDownloads(DefaultArtifactResolver.java:585) ~[na:na]
+	at org.eclipse.aether.internal.impl.DefaultArtifactResolver.performDownloads(DefaultArtifactResolver.java:503) ~[na:na]
+	at org.eclipse.aether.internal.impl.DefaultArtifactResolver.resolve(DefaultArtifactResolver.java:421) ~[na:na]
+	... 8 common frames omitted
+2017-03-29 22:14:06,221 [Worker-17] WARN  o.e.r.models.ModelRepository - Failed to download org.eclipse.swt:org.eclipse.swt.win32.win32.x86:call:zip:3.0.0
+org.eclipse.aether.resolution.ArtifactResolutionException: Failure to find org.eclipse.swt:org.eclipse.swt.win32.win32.x86:zip:call:3.0.0-SNAPSHOT in http://download.eclipse.org/recommenders/models/mars/ was cached in the local repository, resolution will not be reattempted until the update interval of models has elapsed or updates are forced
+	at org.eclipse.aether.internal.impl.DefaultArtifactResolver.resolve(DefaultArtifactResolver.java:444) ~[na:na]
+	at org.eclipse.aether.internal.impl.DefaultArtifactResolver.resolveArtifacts(DefaultArtifactResolver.java:246) ~[na:na]
+	at org.eclipse.aether.internal.impl.DefaultArtifactResolver.resolveArtifact(DefaultArtifactResolver.java:223) ~[na:na]
+	at org.eclipse.aether.internal.impl.DefaultRepositorySystem.resolveArtifact(DefaultRepositorySystem.java:294) ~[na:na]
+	at org.eclipse.recommenders.models.ModelRepository.resolveInternal(ModelRepository.java:192) [org.eclipse.recommenders.models_2.2.4.v20150914-0857.jar:na]
+	at org.eclipse.recommenders.models.ModelRepository.resolve(ModelRepository.java:174) [org.eclipse.recommenders.models_2.2.4.v20150914-0857.jar:na]
+	at org.eclipse.recommenders.internal.models.rcp.EclipseModelRepository.resolve(EclipseModelRepository.java:167) [org.eclipse.recommenders.models.rcp_2.2.4.v20150914-0857.jar:na]
+	at org.eclipse.recommenders.internal.models.rcp.DownloadModelArchiveJob.run(DownloadModelArchiveJob.java:76) [org.eclipse.recommenders.models.rcp_2.2.4.v20150914-0857.jar:na]
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:55) [org.eclipse.core.jobs_3.7.0.v20150330-2103.jar:na]
+Caused by: org.eclipse.aether.transfer.ArtifactNotFoundException: Failure to find org.eclipse.swt:org.eclipse.swt.win32.win32.x86:zip:call:3.0.0-SNAPSHOT in http://download.eclipse.org/recommenders/models/mars/ was cached in the local repository, resolution will not be reattempted until the update interval of models has elapsed or updates are forced
+	at org.eclipse.aether.internal.impl.DefaultUpdateCheckManager.newException(DefaultUpdateCheckManager.java:231) ~[na:na]
+	at org.eclipse.aether.internal.impl.DefaultUpdateCheckManager.checkArtifact(DefaultUpdateCheckManager.java:206) ~[na:na]
+	at org.eclipse.aether.internal.impl.DefaultArtifactResolver.gatherDownloads(DefaultArtifactResolver.java:585) ~[na:na]
+	at org.eclipse.aether.internal.impl.DefaultArtifactResolver.performDownloads(DefaultArtifactResolver.java:503) ~[na:na]
+	at org.eclipse.aether.internal.impl.DefaultArtifactResolver.resolve(DefaultArtifactResolver.java:421) ~[na:na]
+	... 8 common frames omitted
+2017-03-29 22:15:24,276 [Worker-0] WARN  o.e.r.models.ModelRepository - Failed to download org.eclipse.swt:org.eclipse.swt.win32.win32.x86:call:zip:3.0.0
+org.eclipse.aether.resolution.ArtifactResolutionException: Failure to find org.eclipse.swt:org.eclipse.swt.win32.win32.x86:zip:call:3.0.0-SNAPSHOT in http://download.eclipse.org/recommenders/models/mars/ was cached in the local repository, resolution will not be reattempted until the update interval of models has elapsed or updates are forced
+	at org.eclipse.aether.internal.impl.DefaultArtifactResolver.resolve(DefaultArtifactResolver.java:444) ~[na:na]
+	at org.eclipse.aether.internal.impl.DefaultArtifactResolver.resolveArtifacts(DefaultArtifactResolver.java:246) ~[na:na]
+	at org.eclipse.aether.internal.impl.DefaultArtifactResolver.resolveArtifact(DefaultArtifactResolver.java:223) ~[na:na]
+	at org.eclipse.aether.internal.impl.DefaultRepositorySystem.resolveArtifact(DefaultRepositorySystem.java:294) ~[na:na]
+	at org.eclipse.recommenders.models.ModelRepository.resolveInternal(ModelRepository.java:192) [org.eclipse.recommenders.models_2.2.4.v20150914-0857.jar:na]
+	at org.eclipse.recommenders.models.ModelRepository.resolve(ModelRepository.java:174) [org.eclipse.recommenders.models_2.2.4.v20150914-0857.jar:na]
+	at org.eclipse.recommenders.internal.models.rcp.EclipseModelRepository.resolve(EclipseModelRepository.java:167) [org.eclipse.recommenders.models.rcp_2.2.4.v20150914-0857.jar:na]
+	at org.eclipse.recommenders.internal.models.rcp.DownloadModelArchiveJob.run(DownloadModelArchiveJob.java:76) [org.eclipse.recommenders.models.rcp_2.2.4.v20150914-0857.jar:na]
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:55) [org.eclipse.core.jobs_3.7.0.v20150330-2103.jar:na]
+Caused by: org.eclipse.aether.transfer.ArtifactNotFoundException: Failure to find org.eclipse.swt:org.eclipse.swt.win32.win32.x86:zip:call:3.0.0-SNAPSHOT in http://download.eclipse.org/recommenders/models/mars/ was cached in the local repository, resolution will not be reattempted until the update interval of models has elapsed or updates are forced
+	at org.eclipse.aether.internal.impl.DefaultUpdateCheckManager.newException(DefaultUpdateCheckManager.java:231) ~[na:na]
+	at org.eclipse.aether.internal.impl.DefaultUpdateCheckManager.checkArtifact(DefaultUpdateCheckManager.java:206) ~[na:na]
+	at org.eclipse.aether.internal.impl.DefaultArtifactResolver.gatherDownloads(DefaultArtifactResolver.java:585) ~[na:na]
+	at org.eclipse.aether.internal.impl.DefaultArtifactResolver.performDownloads(DefaultArtifactResolver.java:503) ~[na:na]
+	at org.eclipse.aether.internal.impl.DefaultArtifactResolver.resolve(DefaultArtifactResolver.java:421) ~[na:na]
+	... 8 common frames omitted

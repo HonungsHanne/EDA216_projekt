@@ -112,7 +112,7 @@ public class Database {
     	String sql =
     				"SELECT *\n"
     			+	"FROM " + TABLE_PALLETS + "\n"
-    			+ 	"WHERE " + KEYWORD_PALLET_ID + " = " + pallet_id + "';";
+    			+ 	"WHERE " + KEYWORD_PALLET_ID + " = " + pallet_id + ";";
     	
     	Statement st;
     	ResultSet rs;
@@ -188,7 +188,7 @@ public class Database {
     	String sql =
     				"SELECT *\n"
     			+	"FROM " + TABLE_PALLETS + "\n"
-    			+	"WHERE " + KEYWORD_BLOCKED + " IS TRUE;";
+    			+	"WHERE " + KEYWORD_BLOCKED + " = 1";
     	
     	Statement st;
     	ResultSet rs;
@@ -241,14 +241,14 @@ public class Database {
 		}
     }
     
-    public ArrayList<String> getDeliveredToCustomer(String customer_name){
-    	ArrayList<String> customers = new ArrayList<String>();
+    public ArrayList<Pallet> getDeliveredToCustomer(String customer_name){
+    	ArrayList<Pallet> pallets = new ArrayList<Pallet>();
     	
     	String sql = 
-    				"	SELECT " + KEYWORD_CUSTOMER_NAME + "\n"
+    				"	SELECT *\n"
     			+	"	FROM " + TABLE_CUSTOMERS + " INNER JOIN " + TABLE_ORDERS + " USING (" + KEYWORD_CUSTOMER_NAME + ", " + KEYWORD_CUSTOMER_ADDRESS + ")\n"
     			+	" 	INNER JOIN " + TABLE_PALLET_ORDERS + " USING (" + KEYWORD_ORDER_ID + ")\n"
-    			+	" 	INNER JOIN " + TABLE_PALLETS + "USING (" + KEYWORD_PALLET_ORDER_ID + ")\n"
+    			+	" 	INNER JOIN " + TABLE_PALLETS + " USING (" + KEYWORD_PALLET_ORDER_ID + ")\n"
     			+	" 	WHERE " + KEYWORD_CUSTOMER_NAME + " = '" + customer_name + "';";
     	
     	Statement st;
@@ -259,13 +259,13 @@ public class Database {
     		rs = st.executeQuery(sql);
     		
     		while (rs.next()){
-    			customers.add(rs.getString(KEYWORD_CUSTOMER_NAME));
+    			pallets.add(new Pallet(rs));
     		}
     	}catch(SQLException e){
     		e.printStackTrace();
     	}
     	
-    	return customers;
+    	return pallets;
     }
     
     
