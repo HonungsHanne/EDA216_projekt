@@ -15,7 +15,7 @@ CREATE TABLE pallets (
 	timestamp		DATE NOT NULL,
 	blocked			BOOLEAN NOT NULL,
 	recipe_name		TEXT NOT NULL,
-	pallet_order_id INT NOT NULL,
+	pallet_order_id INT,
 		
 	FOREIGN KEY (recipe_name) 		REFERENCES recipes(recipe_name),
 	FOREIGN KEY (pallet_order_id) 	REFERENCES palletorders(pallet_order_id),
