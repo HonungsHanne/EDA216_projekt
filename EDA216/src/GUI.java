@@ -14,15 +14,22 @@ import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.swt.widgets.TabFolder;
+import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.TabItem;
+import org.eclipse.swt.widgets.Combo;
+import org.eclipse.jface.viewers.ComboViewer;
 
 public class GUI {
-	protected Shell shell;
+	protected Shell shlSearchPallets;
+	
 	private Text text;
 	private Text txtStartTime;
 	private Text text_1;
 	private Text text_2;
 	private Text text_3;
-	private Text text_4;
+	
 	private Database db;
 	
 	public static void main(String[] args) {
@@ -30,7 +37,6 @@ public class GUI {
 		try {
 			GUI window = new GUI();
 			window.open();
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -43,9 +49,9 @@ public class GUI {
 			System.out.println("Connected to db");
 		}
 		createContents();
-		shell.open();
-		shell.layout();
-		while (!shell.isDisposed()) {
+		shlSearchPallets.open();
+		shlSearchPallets.layout();
+		while (!shlSearchPallets.isDisposed()) {
 			if (!display.readAndDispatch()) {
 				display.sleep();
 			}
@@ -53,40 +59,40 @@ public class GUI {
 	}
 	
 	protected void createContents() {
-		shell = new Shell();
-		shell.setSize(450, 369);
-		shell.setText("SWT Application");
-		shell.setLayout(null);
+		shlSearchPallets = new Shell();
+		shlSearchPallets.setSize(450, 369);
+		shlSearchPallets.setText("Search pallets");
+		shlSearchPallets.setLayout(null);
 		
-		ListViewer listViewer = new ListViewer(shell, SWT.BORDER | SWT.V_SCROLL);
-		List list = listViewer.getList();
-		list.setItems(new String[] {});
-		list.setBounds(10, 185, 414, 125);
+		ListViewer listViewer = new ListViewer(shlSearchPallets, SWT.BORDER | SWT.V_SCROLL);
+		List list_1 = listViewer.getList();
+		list_1.setItems(new String[] {});
+		list_1.setBounds(10, 185, 414, 125);
 		
-		Label lblPalletId = new Label(shell, SWT.NONE);
+		Label lblPalletId = new Label(shlSearchPallets, SWT.NONE);
 		lblPalletId.setBounds(10, 10, 43, 15);
 		lblPalletId.setText("Pallet ID");
 		
-		text = new Text(shell, SWT.BORDER);
+		text = new Text(shlSearchPallets, SWT.BORDER);
 		text.setBounds(117, 10, 254, 18);
 		
-		Label lblNewLabel = new Label(shell, SWT.NONE);
+		Label lblNewLabel = new Label(shlSearchPallets, SWT.NONE);
 		lblNewLabel.setBounds(10, 40, 102, 15);
 		lblNewLabel.setText("Produced (time)");
 		
-		txtStartTime = new Text(shell, SWT.BORDER);
+		txtStartTime = new Text(shlSearchPallets, SWT.BORDER);
 		txtStartTime.setToolTipText("Date (YYYY-MM-DD hh:mm:ss)");
 		txtStartTime.setBounds(117, 40, 117, 18);
 		
-		Label label = new Label(shell, SWT.NONE);
+		Label label = new Label(shlSearchPallets, SWT.NONE);
 		label.setBounds(240, 40, 5, 15);
 		label.setText("-");
 		
-		text_1 = new Text(shell, SWT.BORDER);
+		text_1 = new Text(shlSearchPallets, SWT.BORDER);
 		text_1.setToolTipText("Date (YYYY-MM-DD hh:mm:ss)");
 		text_1.setBounds(250, 40, 121, 18);
 		
-		Button btnSearch = new Button(shell, SWT.NONE);
+		Button btnSearch = new Button(shlSearchPallets, SWT.NONE);
 		btnSearch.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -98,7 +104,7 @@ public class GUI {
 		btnSearch.setBounds(378, 10, 46, 18);
 		btnSearch.setText("Search");
 		
-		Button button = new Button(shell, SWT.NONE);
+		Button button = new Button(shlSearchPallets, SWT.NONE);
 		button.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -113,14 +119,14 @@ public class GUI {
 		button.setText("Search");
 		button.setBounds(378, 40, 46, 18);
 		
-		Label lblProductName = new Label(shell, SWT.NONE);
+		Label lblProductName = new Label(shlSearchPallets, SWT.NONE);
 		lblProductName.setText("Product name");
 		lblProductName.setBounds(10, 70, 101, 15);
 		
-		text_2 = new Text(shell, SWT.BORDER);
+		text_2 = new Text(shlSearchPallets, SWT.BORDER);
 		text_2.setBounds(117, 70, 254, 18);
 		
-		Button button_1 = new Button(shell, SWT.NONE);
+		Button button_1 = new Button(shlSearchPallets, SWT.NONE);
 		button_1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -135,14 +141,11 @@ public class GUI {
 		button_1.setText("Search");
 		button_1.setBounds(378, 70, 46, 18);
 		
-		Label lblDeliveredToCustomer = new Label(shell, SWT.NONE);
+		Label lblDeliveredToCustomer = new Label(shlSearchPallets, SWT.NONE);
 		lblDeliveredToCustomer.setText("Delivered");
 		lblDeliveredToCustomer.setBounds(10, 101, 102, 15);
 		
-		text_3 = new Text(shell, SWT.BORDER);
-		text_3.setBounds(117, 101, 254, 18);
-		
-		Button button_2 = new Button(shell, SWT.NONE);
+		Button button_2 = new Button(shlSearchPallets, SWT.NONE);
 		button_2.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -158,14 +161,15 @@ public class GUI {
 		button_2.setText("Search");
 		button_2.setBounds(378, 101, 46, 18);
 		
-		Label lblBlocked = new Label(shell, SWT.NONE);
+		Label lblBlocked = new Label(shlSearchPallets, SWT.NONE);
 		lblBlocked.setText("Blocked");
 		lblBlocked.setBounds(10, 133, 43, 15);
 		
-		text_4 = new Text(shell, SWT.BORDER);
-		text_4.setBounds(117, 133, 254, 18);
+		Label lblpalletNumberPallet = new Label(shlSearchPallets, SWT.NONE);
+		lblpalletNumberPallet.setBounds(10, 164, 414, 15);
+		lblpalletNumberPallet.setText("(Pallet number, Pallet Order Id, Timestamp, Blocked, Product name)");
 		
-		Button button_3 = new Button(shell, SWT.NONE);
+		Button button_3 = new Button(shlSearchPallets, SWT.NONE);
 		
 		button_3.addMouseListener(new MouseAdapter() {
 			@Override
@@ -181,13 +185,9 @@ public class GUI {
 		});
 		button_3.setText("Search");
 		button_3.setBounds(378, 133, 46, 18);
-					
-		Menu menu = new Menu(shell, SWT.BAR);
-		shell.setMenuBar(menu);
 		
-		Label lblpalletNumberPallet = new Label(shell, SWT.NONE);
-		lblpalletNumberPallet.setBounds(10, 164, 414, 15);
-		lblpalletNumberPallet.setText("(Pallet number, Pallet Order Id, Timestamp, Blocked, Product name)");
+		text_3 = new Text(shlSearchPallets, SWT.BORDER);
+		text_3.setBounds(117, 101, 254, 18);
 
 	}
 }

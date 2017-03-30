@@ -211,7 +211,12 @@ public class Database {
     	return null;
     }
     
-    public void blockPallets(String start, String stop, String recipe_name) {
+    public void createPallets(String productName, int amount) {
+    	String sql =
+    				"INSERT INTO " + TABLE_PALLETS + "";
+    }
+    
+    public int blockPallets(String start, String stop, String recipe_name) {
     	String sql =
 					"UPDATE " + TABLE_PALLETS + "\n"
 				+	"SET " + KEYWORD_BLOCKED + " = " + 1 + "\n"
@@ -226,19 +231,26 @@ public class Database {
     		st = conn.prepareStatement(sql);
     		
     		int result = st.executeUpdate();
+    		int changedValues = 0;
     		
     		if(result == 0) {
     			conn.rollback();
     		}
     		
     		else {
+    			changedValues = result;
+    			
     			conn.commit();
     		}
     		
 			conn.setAutoCommit(true);
+			
+			return changedValues;
     	} catch (SQLException e) {
 			e.printStackTrace();
 		}
+    	
+    	return 0;
     }
     
     public ArrayList<Pallet> getDeliveredToCustomer(String customer_name){

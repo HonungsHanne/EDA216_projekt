@@ -1,0 +1,11 @@
+
+public class Blocking {
+
+	public static void main(String[] args) {
+		shell = new Shell();
+				shell.setSize(450, 369);
+				shell.setText("SWT Application");
+				shell.setLayout(null);
+	}
+
+}
