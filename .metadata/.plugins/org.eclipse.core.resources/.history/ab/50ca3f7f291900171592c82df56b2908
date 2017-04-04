@@ -49,7 +49,7 @@ public class Database {
     public boolean openConnection(String filename) {
         try {
             Class.forName("org.sqlite.JDBC");
-            conn = DriverManager.getConnection("jdbc:sqlite:" + filename);
+            conn = DriverManager.getConnection("jdbc:sqlite:" + "database.db");
         } catch (SQLException e) {
         	e.printStackTrace();
             return false;
@@ -110,16 +110,6 @@ public class Database {
     	}
     	
 		return null;
-    }
-    
-    public void printPallets() {
-    	ArrayList<Pallet> pallets = getPallets();
-    	
-    	System.out.println("Pallets:");
-    	
-    	for(Pallet p : pallets) {
-    		System.out.println(p.toString());
-    	}
     }
     
     public Pallet getPalletById(int pallet_id) {
@@ -256,8 +246,6 @@ public class Database {
 			}
 			
 			if(recipeMaterials.isEmpty()) {
-				System.out.println("recipeMaterials empty");
-				
 				return false;
 			}
 		} catch(SQLException e) {
@@ -281,8 +269,6 @@ public class Database {
 				}
 				
 				else {
-					System.out.println("Did not find material");
-					
 					return false;
 				}
 			} catch(SQLException e) {
@@ -291,9 +277,7 @@ public class Database {
 			
 			Material material = materials.get(materials.size() - 1);
 			
-			if(r.getAmount() * amount > material.getAmount()) {
-				System.out.println("Not enough resources with " + r.getMaterial_name() + " " + r.getAmount() * amount + " vs material " + material.getAmount());
-				
+			if(r.getAmount() * amount <= material.getAmount()) {
 				return false;
 			}
 		}
@@ -301,7 +285,8 @@ public class Database {
 		return true;
     }
     
-    private boolean updateMaterials(String productName, int amount) {
+    private void updateMaterials(String productName, int amount) {
+    	/*
     	String sql = 
 				"SELECT *\n"
 			+	"FROM " + TABLE_RECIPES + "\n"
@@ -318,48 +303,23 @@ public class Database {
 			}
 			
 			if(recipeMaterials.isEmpty()) {
-				System.out.println("recipeMaterials empty");
-				
 				return false;
 			}
 		} catch(SQLException e) {
 			e.printStackTrace();
 		}
-		
-		for(Recipe r : recipeMaterials) {
-			sql =
-					"UPDATE " + TABLE_MATERIALS + "\n"
-				+	"SET " + KEYWORD_AMOUNT + " = " + KEYWORD_AMOUNT + " - " + r.getAmount() * amount + ", " + KEYWORD_TIMESTAMP + " = CURRENT_TIMESTAMP\n"
-				+	"WHERE " + KEYWORD_MATERIAL_NAME + " = '" + r.getMaterial_name() + "';";
-			
-			try {
-				PreparedStatement st = conn.prepareStatement(sql);
-				int result = st.executeUpdate();
-				
-				if(result == 0) {
-					System.out.println("Could not update material");
-					
-					return false;
-				}
-			} catch(SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		return true;
+		*/
     }
-    	
+    
     public boolean createPallets(String productName, int amount) {
     	if(!checkMaterials(productName, amount)) {
-    		System.out.println("checkMaterials failed");
-    		
     		return false;
     	}
     	
     	String sql =
 				"INSERT INTO " + TABLE_PALLETS + " "
-			+	"(" + KEYWORD_PALLET_ID + ", " + KEYWORD_TIMESTAMP + ", " + KEYWORD_RECIPE_NAME + ", " + KEYWORD_PALLET_ORDER_ID + ") "
-			+	"VALUES (NULL, DATEADD(day, 10, GETDATE()), '" + productName + "', 0);";
+			+	"(" + KEYWORD_TIMESTAMP + ", " + KEYWORD_RECIPE_NAME + ", " + KEYWORD_PALLET_ORDER_ID + ") "
+			+	"VALUES (CURRENT_TIMESTAMP, '" + productName + "', 0);";
     	
     	boolean failed = false;
     	
@@ -379,11 +339,13 @@ public class Database {
     			}
     		}
     		
-    		if(failed || !updateMaterials(productName, amount)) {
+    		if(failed) {
     			conn.rollback();
     		}
     		
     		else {
+    			updateMaterials(productName, amount);
+    			
     			conn.commit();
     		}
     		
@@ -392,9 +354,7 @@ public class Database {
     		exception.printStackTrace();
     	}
     	
-    	System.out.println("Status: " + !failed);
-    	
-    	printPallets();
+    	System.out.println("Status: " + failed);
     	
     	return !failed;
     }

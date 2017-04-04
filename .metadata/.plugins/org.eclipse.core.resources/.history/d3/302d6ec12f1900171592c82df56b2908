@@ -104,8 +104,7 @@ public class Production {
 						palletList.add(createdPallets.get(i).toString());
 					}
 					
-					String[] palletArray = palletList.toArray(new String[0]);
-					list.setItems((String[])palletList.toArray(new String[amount]));
+					list.setItems((String[])palletList.toArray());
 				}
 				
 				else {

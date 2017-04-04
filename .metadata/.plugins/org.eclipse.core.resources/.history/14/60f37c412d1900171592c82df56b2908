@@ -45,7 +45,7 @@ public class GUI {
 	public void open() {
 		Display display = Display.getDefault();
 		db = new Database();
-		if (db.openConnection("new-database.db")) {
+		if (db.openConnection("database.db")) {
 			System.out.println("Connected to db");
 		}
 		createContents();

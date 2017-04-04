@@ -329,7 +329,7 @@ public class Database {
 		for(Recipe r : recipeMaterials) {
 			sql =
 					"UPDATE " + TABLE_MATERIALS + "\n"
-				+	"SET " + KEYWORD_AMOUNT + " = " + KEYWORD_AMOUNT + " - " + r.getAmount() * amount + ", " + KEYWORD_TIMESTAMP + " = CURRENT_TIMESTAMP\n"
+				+	"SET " + KEYWORD_AMOUNT + " = " + KEYWORD_AMOUNT + " - " + r.getAmount() * amount + "\n"
 				+	"WHERE " + KEYWORD_MATERIAL_NAME + " = '" + r.getMaterial_name() + "';";
 			
 			try {
@@ -359,7 +359,7 @@ public class Database {
     	String sql =
 				"INSERT INTO " + TABLE_PALLETS + " "
 			+	"(" + KEYWORD_PALLET_ID + ", " + KEYWORD_TIMESTAMP + ", " + KEYWORD_RECIPE_NAME + ", " + KEYWORD_PALLET_ORDER_ID + ") "
-			+	"VALUES (NULL, DATEADD(day, 10, GETDATE()), '" + productName + "', 0);";
+			+	"VALUES (NULL, CURRENT_TIMESTAMP, '" + productName + "', 0);";
     	
     	boolean failed = false;
     	
@@ -379,11 +379,13 @@ public class Database {
     			}
     		}
     		
-    		if(failed || !updateMaterials(productName, amount)) {
+    		if(failed) {
     			conn.rollback();
     		}
     		
     		else {
+    			updateMaterials(productName, amount);
+    			
     			conn.commit();
     		}
     		

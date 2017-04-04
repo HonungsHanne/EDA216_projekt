@@ -329,7 +329,7 @@ public class Database {
 		for(Recipe r : recipeMaterials) {
 			sql =
 					"UPDATE " + TABLE_MATERIALS + "\n"
-				+	"SET " + KEYWORD_AMOUNT + " = " + KEYWORD_AMOUNT + " - " + r.getAmount() * amount + ", " + KEYWORD_TIMESTAMP + " = CURRENT_TIMESTAMP\n"
+				+	"SET " + KEYWORD_AMOUNT + " = " + KEYWORD_AMOUNT + " - " + r.getAmount() * amount + "\n"
 				+	"WHERE " + KEYWORD_MATERIAL_NAME + " = '" + r.getMaterial_name() + "';";
 			
 			try {
@@ -344,9 +344,50 @@ public class Database {
 			} catch(SQLException e) {
 				e.printStackTrace();
 			}
+			
+			Material material = materials.get(materials.size() - 1);
+			
+			if(r.getAmount() * amount > material.getAmount()) {
+				System.out.println("Not enough resources with " + r.getMaterial_name() + " " + r.getAmount() * amount + " vs material " + material.getAmount());
+				
+				return false;
+			}
 		}
 		
-		return true;
+    	sql =
+				"UPDATE " + TABLE_PALLETS + "\n"
+			+	"SET " + KEYWORD_BLOCKED + " = " + 1 + "\n"
+			+	"WHERE " + KEYWORD_TIMESTAMP + " >= " + "'" + start + "'\n"
+			+		"AND " + KEYWORD_TIMESTAMP + " <= " + "'" + stop + "'\n"
+			+ 		"AND " + KEYWORD_RECIPE_NAME + " = '" + recipe_name + "';";
+	
+		PreparedStatement st;
+		
+		try {
+			conn.setAutoCommit(false);
+			st = conn.prepareStatement(sql);
+			
+			int result = st.executeUpdate();
+			int changedValues = 0;
+			
+			if(result == 0) {
+				conn.rollback();
+			}
+			
+			else {
+				changedValues = result;
+				
+				conn.commit();
+			}
+			
+			conn.setAutoCommit(true);
+			
+			return changedValues;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	return 0;
     }
     	
     public boolean createPallets(String productName, int amount) {
@@ -359,7 +400,7 @@ public class Database {
     	String sql =
 				"INSERT INTO " + TABLE_PALLETS + " "
 			+	"(" + KEYWORD_PALLET_ID + ", " + KEYWORD_TIMESTAMP + ", " + KEYWORD_RECIPE_NAME + ", " + KEYWORD_PALLET_ORDER_ID + ") "
-			+	"VALUES (NULL, DATEADD(day, 10, GETDATE()), '" + productName + "', 0);";
+			+	"VALUES (NULL, CURRENT_TIMESTAMP, '" + productName + "', 0);";
     	
     	boolean failed = false;
     	
@@ -379,11 +420,13 @@ public class Database {
     			}
     		}
     		
-    		if(failed || !updateMaterials(productName, amount)) {
+    		if(failed) {
     			conn.rollback();
     		}
     		
     		else {
+    			updateMaterials(productName, amount);
+    			
     			conn.commit();
     		}
     		

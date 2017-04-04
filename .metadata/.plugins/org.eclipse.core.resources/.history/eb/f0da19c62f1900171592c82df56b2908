@@ -105,7 +105,7 @@ public class Production {
 					}
 					
 					String[] palletArray = palletList.toArray(new String[0]);
-					list.setItems((String[])palletList.toArray(new String[amount]));
+					list.setItems((String[])palletList.toArray());
 				}
 				
 				else {

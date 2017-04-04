@@ -1,9 +1,6 @@
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Label;
-
-import java.util.ArrayList;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Button;
@@ -97,15 +94,7 @@ public class Production {
 				boolean result = db.createPallets(text.getText(), amount);
 				
 				if(result) {
-					ArrayList<Pallet> createdPallets = db.getPallets();
-					ArrayList<String> palletList = new ArrayList<>();
-					
-					for(int i = createdPallets.size() - 1; i > createdPallets.size() - amount - 1; i--) {
-						palletList.add(createdPallets.get(i).toString());
-					}
-					
-					String[] palletArray = palletList.toArray(new String[0]);
-					list.setItems((String[])palletList.toArray(new String[amount]));
+					list.setItems(new String[] { "Produced pallets." });
 				}
 				
 				else {

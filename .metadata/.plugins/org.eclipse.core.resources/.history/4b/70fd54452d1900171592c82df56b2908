@@ -35,7 +35,7 @@ public class Blocking {
 	 */
 	public void open() {
 		db = new Database();
-		if (db.openConnection("new-database.db")) {
+		if (db.openConnection("database.db")) {
 			System.out.println("Connected to db");
 		}
 		

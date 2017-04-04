@@ -21,7 +21,7 @@ CREATE TABLE recipes (
 );
 
 CREATE TABLE pallets (
-	pallet_nbr		INT AUTO_INCREMENT,
+	pallet_nbr		integer,
 	timestamp		DATE DEFAULT CURRENT_TIMESTAMP NOT NULL,
 	blocked			BOOLEAN DEFAULT FALSE NOT NULL,
 	recipe_name		TEXT NOT NULL,

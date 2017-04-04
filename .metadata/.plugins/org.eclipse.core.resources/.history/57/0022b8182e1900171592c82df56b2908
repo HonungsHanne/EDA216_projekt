@@ -301,7 +301,7 @@ public class Database {
 		return true;
     }
     
-    private boolean updateMaterials(String productName, int amount) {
+    private void updateMaterials(String productName, int amount) {
     	String sql = 
 				"SELECT *\n"
 			+	"FROM " + TABLE_RECIPES + "\n"
@@ -320,33 +320,46 @@ public class Database {
 			if(recipeMaterials.isEmpty()) {
 				System.out.println("recipeMaterials empty");
 				
-				return false;
+				return;
 			}
 		} catch(SQLException e) {
 			e.printStackTrace();
 		}
 		
-		for(Recipe r : recipeMaterials) {
-			sql =
-					"UPDATE " + TABLE_MATERIALS + "\n"
-				+	"SET " + KEYWORD_AMOUNT + " = " + KEYWORD_AMOUNT + " - " + r.getAmount() * amount + ", " + KEYWORD_TIMESTAMP + " = CURRENT_TIMESTAMP\n"
-				+	"WHERE " + KEYWORD_MATERIAL_NAME + " = '" + r.getMaterial_name() + "';";
+    	String sql =
+				"UPDATE " + TABLE_PALLETS + "\n"
+			+	"SET " + KEYWORD_BLOCKED + " = " + 1 + "\n"
+			+	"WHERE " + KEYWORD_TIMESTAMP + " >= " + "'" + start + "'\n"
+			+		"AND " + KEYWORD_TIMESTAMP + " <= " + "'" + stop + "'\n"
+			+ 		"AND " + KEYWORD_RECIPE_NAME + " = '" + recipe_name + "';";
+	
+		PreparedStatement st;
+		
+		try {
+			conn.setAutoCommit(false);
+			st = conn.prepareStatement(sql);
 			
-			try {
-				PreparedStatement st = conn.prepareStatement(sql);
-				int result = st.executeUpdate();
-				
-				if(result == 0) {
-					System.out.println("Could not update material");
-					
-					return false;
-				}
-			} catch(SQLException e) {
-				e.printStackTrace();
+			int result = st.executeUpdate();
+			int changedValues = 0;
+			
+			if(result == 0) {
+				conn.rollback();
 			}
+			
+			else {
+				changedValues = result;
+				
+				conn.commit();
+			}
+			
+			conn.setAutoCommit(true);
+			
+			return changedValues;
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 		
-		return true;
+	return 0;
     }
     	
     public boolean createPallets(String productName, int amount) {
@@ -359,7 +372,7 @@ public class Database {
     	String sql =
 				"INSERT INTO " + TABLE_PALLETS + " "
 			+	"(" + KEYWORD_PALLET_ID + ", " + KEYWORD_TIMESTAMP + ", " + KEYWORD_RECIPE_NAME + ", " + KEYWORD_PALLET_ORDER_ID + ") "
-			+	"VALUES (NULL, DATEADD(day, 10, GETDATE()), '" + productName + "', 0);";
+			+	"VALUES (NULL, CURRENT_TIMESTAMP, '" + productName + "', 0);";
     	
     	boolean failed = false;
     	
@@ -379,11 +392,13 @@ public class Database {
     			}
     		}
     		
-    		if(failed || !updateMaterials(productName, amount)) {
+    		if(failed) {
     			conn.rollback();
     		}
     		
     		else {
+    			updateMaterials(productName, amount);
+    			
     			conn.commit();
     		}
     		

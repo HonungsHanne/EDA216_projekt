@@ -359,7 +359,7 @@ public class Database {
     	String sql =
 				"INSERT INTO " + TABLE_PALLETS + " "
 			+	"(" + KEYWORD_PALLET_ID + ", " + KEYWORD_TIMESTAMP + ", " + KEYWORD_RECIPE_NAME + ", " + KEYWORD_PALLET_ORDER_ID + ") "
-			+	"VALUES (NULL, DATEADD(day, 10, GETDATE()), '" + productName + "', 0);";
+			+	"VALUES (NULL, DATEADD(minute, 10, CURRENT_TIMESTAMP), '" + productName + "', 0);";
     	
     	boolean failed = false;
     	
