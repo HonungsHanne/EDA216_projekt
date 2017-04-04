@@ -100,6 +100,10 @@ public class Database {
 				pallets.add(new Pallet(rs));
 			}
 			
+			if(pallets.isEmpty()) {
+				return null;
+			}
+			
 			return pallets;
     	}catch (SQLException e) {
     		e.printStackTrace();
@@ -133,23 +137,28 @@ public class Database {
 		return null;
     }
     
-    public ArrayList<Pallet> getPalletByRecipe(String recipe_name){
-    	ArrayList<Pallet> temp = new ArrayList<Pallet>();
+    public ArrayList<Pallet> getPalletsByRecipe(String recipe_name){
     	String sqlcommand = "SELECT * \n"
     			+ "FROM " + TABLE_PALLETS + " \n WHERE " + KEYWORD_RECIPE_NAME + " = '" + recipe_name + "'";
-    	
-    	
-    	Statement st;
-    	ResultSet rs;
-    	Pallet pallet;
+
     	try {
+    		Statement st;
+        	ResultSet rs;
+        	
     		st = conn.createStatement();
     		rs = st.executeQuery(sqlcommand);
+    		
+        	ArrayList<Pallet> pallets = new ArrayList<Pallet>();
+
     		while (rs.next()){
-    			pallet = new Pallet(rs);
-    			temp.add(pallet);
+    			pallets.add(new Pallet(rs));
     		}
-    		return temp;
+    		
+    		if(pallets.isEmpty()) {
+    			return null;
+    		}
+    		
+    		return pallets;
     	}catch(SQLException e){
     		e.printStackTrace();
     	}
@@ -163,10 +172,11 @@ public class Database {
     			+	"WHERE " + KEYWORD_TIMESTAMP + " >= " + "'" + start + "'\n"
     			+		"AND " + KEYWORD_TIMESTAMP + " <= " + "'" + stop + "';";
     	
-    	Statement st;
-    	ResultSet rs;
     	
     	try {
+    		Statement st;
+        	ResultSet rs;
+        	
     		st = conn.createStatement();
     		rs = st.executeQuery(sql);
     		
@@ -174,6 +184,10 @@ public class Database {
     		
     		while(rs.next()) {
     			pallets.add(new Pallet(rs));
+    		}
+    		
+    		if(pallets.isEmpty()) {
+    			return null;
     		}
     		
     		return pallets;
@@ -203,6 +217,10 @@ public class Database {
     			pallets.add(new Pallet(rs));
     		}
     		
+    		if(pallets.isEmpty()) {
+    			return null;
+    		}
+    		
     		return pallets;
     	}catch(SQLException e){
     		e.printStackTrace();
@@ -211,9 +229,134 @@ public class Database {
     	return null;
     }
     
-    public void createPallets(String productName, int amount) {
+    private boolean checkMaterials(String productName, int amount) {
+    	String sql = 
+				"SELECT *\n"
+			+	"FROM " + TABLE_RECIPES + "\n"
+			+	"WHERE " + KEYWORD_RECIPE_NAME + " = '" + productName + "';";
+	
+		ArrayList<Recipe> recipeMaterials = new ArrayList<>();
+		
+		try {
+			Statement st = conn.createStatement();
+			ResultSet rs = st.executeQuery(sql);
+			
+			while(rs.next()) {
+				recipeMaterials.add(new Recipe(rs));
+			}
+			
+			if(recipeMaterials.isEmpty()) {
+				return false;
+			}
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+		
+		ArrayList<Material> materials = new ArrayList<>();
+		
+		for(Recipe r : recipeMaterials) {
+			sql =
+					"SELECT *\n"
+				+	"FROM " + TABLE_MATERIALS + "\n"
+				+	"WHERE " + KEYWORD_MATERIAL_NAME + " = '" + r.getMaterial_name() + "';";
+			
+			try {
+				Statement st = conn.createStatement();
+				ResultSet rs = st.executeQuery(sql);
+				
+				if(rs.next()) {
+					materials.add(new Material(rs));
+				}
+				
+				else {
+					return false;
+				}
+			} catch(SQLException e) {
+				e.printStackTrace();
+			}
+			
+			Material material = materials.get(materials.size() - 1);
+			
+			if(r.getAmount() * amount <= material.getAmount()) {
+				return false;
+			}
+		}
+		
+		return true;
+    }
+    
+    private void updateMaterials(String productName, int amount) {
+    	/*
+    	String sql = 
+				"SELECT *\n"
+			+	"FROM " + TABLE_RECIPES + "\n"
+			+	"WHERE " + KEYWORD_RECIPE_NAME + " = '" + productName + "';";
+	
+		ArrayList<Recipe> recipeMaterials = new ArrayList<>();
+		
+		try {
+			Statement st = conn.createStatement();
+			ResultSet rs = st.executeQuery(sql);
+			
+			while(rs.next()) {
+				recipeMaterials.add(new Recipe(rs));
+			}
+			
+			if(recipeMaterials.isEmpty()) {
+				return false;
+			}
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+		*/
+    }
+    
+    public boolean createPallets(String productName, int amount) {
+    	if(!checkMaterials(productName, amount)) {
+    		return false;
+    	}
+    	
     	String sql =
-    				"INSERT INTO " + TABLE_PALLETS + "";
+				"INSERT INTO " + TABLE_PALLETS + " "
+			+	"(" + KEYWORD_TIMESTAMP + ", " + KEYWORD_RECIPE_NAME + ", " + KEYWORD_PALLET_ORDER_ID + ") "
+			+	"VALUES (CURRENT_TIMESTAMP, '" + productName + "', 0);";
+    	
+    	boolean failed = false;
+    	
+    	try {
+    		PreparedStatement st;
+    		
+    		conn.setAutoCommit(false);
+    		st = conn.prepareStatement(sql);
+    		
+    		for(int i = 0; i != amount; ++i) {
+    			int result = st.executeUpdate();
+    			
+    			if(result == 0) {
+    				failed = true;
+    				
+    				break;
+    			}
+    		}
+    		
+    		if(failed) {
+    			conn.rollback();
+    		}
+    		
+    		else {
+    			updateMaterials(productName, amount);
+    			
+    			conn.commit();
+    		}
+    		
+    		conn.setAutoCommit(true);
+    	} catch(SQLException exception) {
+    		exception.printStackTrace();
+    	}
+    	
+    	System.out.println("Status: " + failed);
+    	
+    	return !failed;
     }
     
     public int blockPallets(String start, String stop, String recipe_name) {
@@ -254,8 +397,6 @@ public class Database {
     }
     
     public ArrayList<Pallet> getDeliveredToCustomer(String customer_name){
-    	ArrayList<Pallet> pallets = new ArrayList<Pallet>();
-    	
     	String sql = 
     				"	SELECT *\n"
     			+	"	FROM " + TABLE_CUSTOMERS + " INNER JOIN " + TABLE_ORDERS + " USING (" + KEYWORD_CUSTOMER_NAME + ", " + KEYWORD_CUSTOMER_ADDRESS + ")\n"
@@ -270,19 +411,21 @@ public class Database {
     		st = conn.createStatement();
     		rs = st.executeQuery(sql);
     		
+    		ArrayList<Pallet> pallets = new ArrayList<Pallet>();
+    		
     		while (rs.next()){
     			pallets.add(new Pallet(rs));
     		}
+    		
+    		if(pallets.isEmpty()) {
+    			return null;
+    		}
+    		
+    		return pallets;
     	}catch(SQLException e){
     		e.printStackTrace();
     	}
     	
-    	return pallets;
+    	return null;
     }
-    
-    
-    
-
-
- 
 }

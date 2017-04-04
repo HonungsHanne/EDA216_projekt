@@ -69,21 +69,42 @@ public class Production {
 		lblNewLabel_1.setBounds(176, 13, 55, 21);
 		lblNewLabel_1.setText("Amount");
 		
-		Button btnNewButton = new Button(shlProducePallets, SWT.NONE);
-		btnNewButton.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseDown(MouseEvent e) {
-				
-			}
-		});
-		btnNewButton.setBounds(330, 8, 94, 25);
-		btnNewButton.setText("Produce");
-		
 		Spinner spinner = new Spinner(shlProducePallets, SWT.BORDER);
 		spinner.setBounds(237, 10, 47, 21);
 		
 		List list = new List(shlProducePallets, SWT.BORDER);
 		list.setBounds(10, 86, 414, 165);
+		
+		Button btnNewButton = new Button(shlProducePallets, SWT.NONE);
+		btnNewButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(MouseEvent e) {
+				int amount;
+				
+				try {
+					amount = Integer.parseInt(spinner.getText());
+				} catch(NumberFormatException exception) {
+					return;
+				}
+				
+				if(text.getText().isEmpty() || amount <= 0) {
+					return;
+				}
+				
+				boolean result = db.createPallets(text.getText(), amount);
+				
+				if(result) {
+					list.setItems(new String[] { "Produced pallets." });
+				}
+				
+				else {
+					list.setItems(new String[] { "Could not create pallets, check material status." });
+				}
+			}
+		});
+		
+		btnNewButton.setBounds(330, 8, 94, 25);
+		btnNewButton.setText("Produce");
 		
 		Label label = new Label(shlProducePallets, SWT.NONE);
 		label.setText("(Pallet number, Pallet Order Id, Timestamp, Blocked, Product name)");

@@ -10,6 +10,10 @@ public class Pallet {
 	boolean blocked;
 	String recipe_name;
 	
+	public Pallet() {
+		//Just for simplification
+	}
+	
 	public Pallet(ResultSet rs) throws SQLException{
 		blocked = rs.getBoolean(Database.KEYWORD_BLOCKED);
 		pallet_nbr = rs.getInt(Database.KEYWORD_PALLET_ID);

@@ -96,9 +96,30 @@ public class GUI {
 		btnSearch.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
-				Pallet p = db.getPalletById(Integer.parseInt(text.getText()));
+				if(text.getText().isEmpty()) {
+					return;
+				}
+				
+				Pallet p = new Pallet();
+				
+				try {
+					p = db.getPalletById(Integer.parseInt(text.getText()));
+				} catch(NumberFormatException exception) {
+					return;
+				}
+				
 				List list = listViewer.getList();
-				list.setItems(new String[] {p.toString()});
+				String[] inList;
+				
+				if(p == null) {
+					inList = new String[] { "There is no pallet with that ID." };
+				}
+				
+				else {
+					inList = new String[] { p.toString() };
+				}
+				
+				list.setItems(inList);
 			}
 		});
 		btnSearch.setBounds(378, 10, 46, 18);
@@ -108,11 +129,24 @@ public class GUI {
 		button.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
+				if(txtStartTime.getText().isEmpty() || text_1.getText().isEmpty()) {
+					return;
+				}
+				
 				ArrayList<Pallet> p_list = db.getPalletsByTimespan(txtStartTime.getText(), text_1.getText());
+				
+				if(p_list == null) {
+					listViewer.getList().setItems(new String[] { "No pallets were produced during this timespan." });
+					
+					return;
+				}
+				
 				String[] tuples = new String[p_list.size()];
+				
 				for(int i = 0; i < p_list.size(); i++){
 					tuples[i] = p_list.get(i).toString();
 				}
+				
 				listViewer.getList().setItems(tuples);
 			}
 		});
@@ -130,7 +164,18 @@ public class GUI {
 		button_1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
-				ArrayList<Pallet> p_list = db.getPalletByRecipe(text_2.getText());
+				if(text_2.getText().isEmpty()) {
+					return;
+				}
+				
+				ArrayList<Pallet> p_list = db.getPalletsByRecipe(text_2.getText());
+				
+				if(p_list == null) {
+					listViewer.getList().setItems(new String[] { "No pallets with the given name exists." });
+					
+					return;
+				}
+				
 				String[] tuples = new String[p_list.size()];
 				for(int i = 0; i < p_list.size(); i++){
 					tuples[i] = p_list.get(i).toString();
@@ -149,7 +194,18 @@ public class GUI {
 		button_2.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
+				if(text_3.getText().isEmpty()) {
+					return;
+				}
+				
 				ArrayList<Pallet> p_list = db.getDeliveredToCustomer(text_3.getText());
+				
+				if(p_list == null) {
+					listViewer.getList().setItems(new String[] { text_3.getText() + " have no delivered pallets." });
+					
+					return;
+				}
+				
 				String[] tuples = new String[p_list.size()];
 				for(int i = 0; i < p_list.size(); i++){
 					tuples[i] = p_list.get(i).toString();
@@ -175,6 +231,13 @@ public class GUI {
 			@Override
 			public void mouseDown(MouseEvent e) {
 				ArrayList<Pallet> p_list = db.getBlockedPallets();
+				
+				if(p_list == null) {
+					listViewer.getList().setItems(new String[] { "There are no blocked pallets." });
+					
+					return;
+				}
+				
 				String[] tuples = new String[p_list.size()];
 				for(int i = 0; i < p_list.size(); i++){
 					tuples[i] = p_list.get(i).toString();
@@ -187,7 +250,7 @@ public class GUI {
 		button_3.setBounds(378, 133, 46, 18);
 		
 		text_3 = new Text(shlSearchPallets, SWT.BORDER);
+		text_3.setToolTipText("Customer name");
 		text_3.setBounds(117, 101, 254, 18);
-
 	}
 }
