@@ -14,9 +14,9 @@ CREATE TABLE recipes (
 	recipe_name		TEXT NOT NULL,
 	amount 			DOUBLE NOT NULL,
 	material_name 	TEXT NOT NULL,
-		
+
 	FOREIGN KEY (material_name) REFERENCES materials(material_name),
-	
+
 	PRIMARY KEY (recipe_name, material_name)
 );
 
@@ -26,31 +26,31 @@ CREATE TABLE pallets (
 	blocked			BOOLEAN DEFAULT FALSE NOT NULL,
 	recipe_name		TEXT NOT NULL,
 	pallet_order_id INT,
-		
+
 	FOREIGN KEY (recipe_name) 		REFERENCES recipes(recipe_name),
 	FOREIGN KEY (pallet_order_id) 	REFERENCES palletorders(pallet_order_id),
-	
+
 	PRIMARY KEY(pallet_nbr)
 );
-		
+
 CREATE TABLE palletorders (
-	pallet_order_id	INT AUTO_INCREMENT,
+	pallet_order_id	integer,
 	order_id		INT NOT NULL,
 	recipe_name 	TEXT NOT NULL,
 	amount 			INT NOT NULL,
-			
+
 	FOREIGN KEY (order_id)		REFERENCES orders(order_id),
 	FOREIGN KEY (recipe_name)	REFERENCES recipes(recipe_name),
-	
+
 	PRIMARY KEY (pallet_order_id)
 );
-		
+
 CREATE TABLE orders (
-	order_id 			INT AUTO_INCREMENT,
+	order_id 			integer,
 	delivery_date 		DATE NOT NULL,
 	customer_name 		TEXT NOT NULL,
 	customer_address 	TEXT NOT NULL,
-		
+
 	FOREIGN KEY (customer_name, customer_address) REFERENCES customers(customer_name, customer_address),
 
 	PRIMARY KEY (order_id)
@@ -60,23 +60,23 @@ CREATE TABLE materials (
 	material_name 	TEXT NOT NULL,
 	amount 			DOUBLE NOT NULL,
 	timestamp 		DATE DEFAULT CURRENT_TIMESTAMP NOT NULL,
-		
+
 	PRIMARY KEY (material_name)
 );
 
 CREATE TABLE trucks (
 	truck_id		INT NOT NULL,
 	pallet_order_id	INT NOT NULL,
-		
+
 	FOREIGN KEY (pallet_order_id) REFERENCES palletorders(pallet_order_id),
-	
+
 	PRIMARY KEY (truck_id, pallet_order_id)
 );
 
 CREATE TABLE customers(
 	customer_address 	TEXT NOT NULL,
 	customer_name 		TEXT NOT NULL,
-		
+
 	PRIMARY KEY (customer_name, customer_address)
 );
 
@@ -98,7 +98,7 @@ INSERT INTO materials VALUES('Sodium bicarbonate', 10000, '2017-03-29 12:00:00')
 INSERT INTO materials VALUES('Vanilla', 10000, '2017-03-29 12:00:00');
 INSERT INTO materials VALUES('Chopped almonds', 10000, '2017-03-29 12:00:00');
 INSERT INTO materials VALUES('Cinnamon', 10000, '2017-03-29 12:00:00');
-INSERT INTO materials VALUES('Vanilla sugar', 10000, '2017-03-29 12:00:00'); 
+INSERT INTO materials VALUES('Vanilla sugar', 10000, '2017-03-29 12:00:00');
 
 INSERT INTO recipes VALUES('Nut ring', 450, 'Flour');
 INSERT INTO recipes VALUES('Nut ring', 450, 'Butter');
