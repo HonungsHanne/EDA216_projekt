@@ -1,0 +1,481 @@
+import java.sql.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
+
+/**
+ * Database is a class that specifies the interface to the movie
+ * database. Uses JDBC.
+ */
+public class Database {
+
+    /**
+     * The database connection.
+     */
+    private Connection conn;
+    public static final String KEYWORD_PALLET_ID = "pallet_nbr";
+    public static final String KEYWORD_TIMESTAMP = "timestamp";
+    public static final String KEYWORD_BLOCKED = "blocked";
+    public static final String KEYWORD_RECIPE_NAME = "recipe_name";
+    public static final String KEYWORD_PALLET_ORDER_ID = "pallet_order_id";
+    public static final String KEYWORD_ORDER_ID = "order_id";
+    public static final String KEYWORD_AMOUNT = "amount";
+    public static final String KEYWORD_DELIVERY_DATE = "delivery_date";
+    public static final String KEYWORD_CUSTOMER_NAME = "customer_name";
+    public static final String KEYWORD_CUSTOMER_ADDRESS = "customer_address";
+    public static final String KEYWORD_MATERIAL_NAME = "material_name";
+    public static final String KEYWORD_TRUCK_ID = "truck_id";
+    public static final String TABLE_PALLETS = "pallets";
+    public static final String TABLE_PALLET_ORDERS = "palletorders";
+    public static final String TABLE_ORDERS = "orders";
+    public static final String TABLE_MATERIALS = "materials";
+    public static final String TABLE_RECIPES = "recipes";
+    public static final String TABLE_TRUCKS = "trucks";
+    public static final String TABLE_CUSTOMERS = "customers";
+    
+    
+
+    /**
+     * Create the database interface object. Connection to the
+     * database is performed later.
+     */
+    public Database() {
+        conn = null;
+        
+    }
+
+    /**
+     * Open a connection to the database, using the specified user
+     * name and password.
+     */
+    public boolean openConnection(String filename) {
+        try {
+            Class.forName("org.sqlite.JDBC");
+            conn = DriverManager.getConnection("jdbc:sqlite:" + filename);
+        } catch (SQLException e) {
+        	e.printStackTrace();
+            return false;
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            return false;            
+        }
+        return true;
+    }
+
+    /**
+     * Close the connection to the database.
+     */
+    public void closeConnection() {
+        try {
+            if (conn != null) {
+                conn.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Check if the connection to the database has been established
+     * 
+     * @return true if the connection has been established
+     */
+    public boolean isConnected() {
+        return conn != null;
+    }
+    
+    public ArrayList<Pallet> getPallets() {
+    	String sql = 
+    				"SELECT *\n"
+    			+	"FROM " + TABLE_PALLETS + ";";
+    	
+    	Statement st;
+    	ResultSet rs;
+    	
+    	try {
+    		st = conn.createStatement();
+			rs = st.executeQuery(sql);
+			
+			ArrayList<Pallet> pallets = new ArrayList<>();
+			
+			while (rs.next()){
+				pallets.add(new Pallet(rs));
+			}
+			
+			if(pallets.isEmpty()) {
+				return null;
+			}
+			
+			return pallets;
+    	}catch (SQLException e) {
+    		e.printStackTrace();
+    	}
+    	
+		return null;
+    }
+    
+    public void printPallets() {
+    	ArrayList<Pallet> pallets = getPallets();
+    	
+    	System.out.println("Pallets:");
+    	
+    	for(Pallet p : pallets) {
+    		System.out.println(p.toString());
+    	}
+    }
+    
+    public Pallet getPalletById(int pallet_id) {
+    	String sql =
+    				"SELECT *\n"
+    			+	"FROM " + TABLE_PALLETS + "\n"
+    			+ 	"WHERE " + KEYWORD_PALLET_ID + " = " + pallet_id + ";";
+    	
+    	Statement st;
+    	ResultSet rs;
+    	
+    	try {
+    		st = conn.createStatement();
+			rs = st.executeQuery(sql);
+			
+			if(!rs.next()) {
+				return null;
+			}
+			
+			return new Pallet(rs);
+    	}catch (SQLException e) {
+    		e.printStackTrace();
+    	}
+    	
+		return null;
+    }
+    
+    public ArrayList<Pallet> getPalletsByRecipe(String recipe_name){
+    	String sqlcommand = "SELECT * \n"
+    			+ "FROM " + TABLE_PALLETS + " \n WHERE " + KEYWORD_RECIPE_NAME + " = '" + recipe_name + "'";
+
+    	try {
+    		Statement st;
+        	ResultSet rs;
+        	
+    		st = conn.createStatement();
+    		rs = st.executeQuery(sqlcommand);
+    		
+        	ArrayList<Pallet> pallets = new ArrayList<Pallet>();
+
+    		while (rs.next()){
+    			pallets.add(new Pallet(rs));
+    		}
+    		
+    		if(pallets.isEmpty()) {
+    			return null;
+    		}
+    		
+    		return pallets;
+    	}catch(SQLException e){
+    		e.printStackTrace();
+    	}
+    	return null;
+    }
+    
+    public ArrayList<Pallet> getPalletsByTimespan(String start, String stop) {
+    	String sql =
+    				"SELECT *\n"
+    			+	"FROM " + TABLE_PALLETS + "\n"
+    			+	"WHERE " + KEYWORD_TIMESTAMP + " >= " + "'" + start + "'\n"
+    			+		"AND " + KEYWORD_TIMESTAMP + " <= " + "'" + stop + "';";
+    	
+    	
+    	try {
+    		Statement st;
+        	ResultSet rs;
+        	
+    		st = conn.createStatement();
+    		rs = st.executeQuery(sql);
+    		
+    		ArrayList<Pallet> pallets = new ArrayList<>();
+    		
+    		while(rs.next()) {
+    			pallets.add(new Pallet(rs));
+    		}
+    		
+    		if(pallets.isEmpty()) {
+    			return null;
+    		}
+    		
+    		return pallets;
+    	}catch(SQLException e){
+    		e.printStackTrace();
+    	}
+    	
+    	return null;
+    }
+    
+    public ArrayList<Pallet> getBlockedPallets() {
+    	String sql =
+    				"SELECT *\n"
+    			+	"FROM " + TABLE_PALLETS + "\n"
+    			+	"WHERE " + KEYWORD_BLOCKED + " = 1";
+    	
+    	Statement st;
+    	ResultSet rs;
+    	
+    	try {
+    		st = conn.createStatement();
+    		rs = st.executeQuery(sql);
+    		
+    		ArrayList<Pallet> pallets = new ArrayList<>();
+    		
+    		while(rs.next()) {
+    			pallets.add(new Pallet(rs));
+    		}
+    		
+    		if(pallets.isEmpty()) {
+    			return null;
+    		}
+    		
+    		return pallets;
+    	}catch(SQLException e){
+    		e.printStackTrace();
+    	}
+    	
+    	return null;
+    }
+    
+    private boolean checkMaterials(String productName, int amount) {
+    	String sql = 
+				"SELECT *\n"
+			+	"FROM " + TABLE_RECIPES + "\n"
+			+	"WHERE " + KEYWORD_RECIPE_NAME + " = '" + productName + "';";
+	
+		ArrayList<Recipe> recipeMaterials = new ArrayList<>();
+		
+		try {
+			Statement st = conn.createStatement();
+			ResultSet rs = st.executeQuery(sql);
+			
+			while(rs.next()) {
+				recipeMaterials.add(new Recipe(rs));
+			}
+			
+			if(recipeMaterials.isEmpty()) {
+				System.out.println("recipeMaterials empty");
+				
+				return false;
+			}
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+		
+		ArrayList<Material> materials = new ArrayList<>();
+		
+		for(Recipe r : recipeMaterials) {
+			sql =
+					"SELECT *\n"
+				+	"FROM " + TABLE_MATERIALS + "\n"
+				+	"WHERE " + KEYWORD_MATERIAL_NAME + " = '" + r.getMaterial_name() + "';";
+			
+			try {
+				Statement st = conn.createStatement();
+				ResultSet rs = st.executeQuery(sql);
+				
+				if(rs.next()) {
+					materials.add(new Material(rs));
+				}
+				
+				else {
+					System.out.println("Did not find material");
+					
+					return false;
+				}
+			} catch(SQLException e) {
+				e.printStackTrace();
+			}
+			
+			Material material = materials.get(materials.size() - 1);
+			
+			if(r.getAmount() * amount > material.getAmount()) {
+				System.out.println("Not enough resources with " + r.getMaterial_name() + " " + r.getAmount() * amount + " vs material " + material.getAmount());
+				
+				return false;
+			}
+		}
+		
+		return true;
+    }
+    
+    private boolean updateMaterials(String productName, int amount) {
+    	String sql = 
+				"SELECT *\n"
+			+	"FROM " + TABLE_RECIPES + "\n"
+			+	"WHERE " + KEYWORD_RECIPE_NAME + " = '" + productName + "';";
+	
+		ArrayList<Recipe> recipeMaterials = new ArrayList<>();
+		
+		try {
+			Statement st = conn.createStatement();
+			ResultSet rs = st.executeQuery(sql);
+			
+			while(rs.next()) {
+				recipeMaterials.add(new Recipe(rs));
+			}
+			
+			if(recipeMaterials.isEmpty()) {
+				System.out.println("recipeMaterials empty");
+				
+				return false;
+			}
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+		
+		for(Recipe r : recipeMaterials) {
+			sql =
+					"UPDATE " + TABLE_MATERIALS + "\n"
+				+	"SET " + KEYWORD_AMOUNT + " = " + KEYWORD_AMOUNT + " - " + r.getAmount() * amount + ", " + KEYWORD_TIMESTAMP + " = CURRENT_TIMESTAMP\n"
+				+	"WHERE " + KEYWORD_MATERIAL_NAME + " = '" + r.getMaterial_name() + "';";
+			
+			try {
+				PreparedStatement st = conn.prepareStatement(sql);
+				int result = st.executeUpdate();
+				
+				if(result == 0) {
+					System.out.println("Could not update material");
+					
+					return false;
+				}
+			} catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return true;
+    }
+    	
+    public boolean createPallets(String productName, int amount) {
+    	if(!checkMaterials(productName, amount)) {
+    		System.out.println("checkMaterials failed");
+    		
+    		return false;
+    	}
+    	
+    	Calendar now = Calendar.getInstance();
+        now.add(Calendar.MINUTE, 10);
+        
+        java.util.Date datePlus10 = now.getTime();
+        
+    	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    	System.out.println(dateFormat.format(datePlus10)); //2016/11/16 12:08:43
+    	
+    	String sql =
+				"INSERT INTO " + TABLE_PALLETS + " "
+			+	"(" + KEYWORD_PALLET_ID + ", " + KEYWORD_TIMESTAMP + ", " + KEYWORD_RECIPE_NAME + ", " + KEYWORD_PALLET_ORDER_ID + ") "
+			+	"VALUES (NULL, DATEADD(day, 10, GETDATE()), '" + productName + "', 0);";
+    	
+    	boolean failed = false;
+    	
+    	try {
+    		PreparedStatement st;
+    		
+    		conn.setAutoCommit(false);
+    		st = conn.prepareStatement(sql);
+    		
+    		for(int i = 0; i != amount; ++i) {
+    			int result = st.executeUpdate();
+    			
+    			if(result == 0) {
+    				failed = true;
+    				
+    				break;
+    			}
+    		}
+    		
+    		if(failed || !updateMaterials(productName, amount)) {
+    			conn.rollback();
+    		}
+    		
+    		else {
+    			conn.commit();
+    		}
+    		
+    		conn.setAutoCommit(true);
+    	} catch(SQLException exception) {
+    		exception.printStackTrace();
+    	}
+    	
+    	System.out.println("Status: " + !failed);
+    	
+    	printPallets();
+    	
+    	return !failed;
+    }
+    
+    public int blockPallets(String start, String stop, String recipe_name) {
+    	String sql =
+					"UPDATE " + TABLE_PALLETS + "\n"
+				+	"SET " + KEYWORD_BLOCKED + " = " + 1 + "\n"
+				+	"WHERE " + KEYWORD_TIMESTAMP + " >= " + "'" + start + "'\n"
+    			+		"AND " + KEYWORD_TIMESTAMP + " <= " + "'" + stop + "'\n"
+    			+ 		"AND " + KEYWORD_RECIPE_NAME + " = '" + recipe_name + "';";
+    	
+    	PreparedStatement st;
+    	
+    	try {
+    		conn.setAutoCommit(false);
+    		st = conn.prepareStatement(sql);
+    		
+    		int result = st.executeUpdate();
+    		int changedValues = 0;
+    		
+    		if(result == 0) {
+    			conn.rollback();
+    		}
+    		
+    		else {
+    			changedValues = result;
+    			
+    			conn.commit();
+    		}
+    		
+			conn.setAutoCommit(true);
+			
+			return changedValues;
+    	} catch (SQLException e) {
+			e.printStackTrace();
+		}
+    	
+    	return 0;
+    }
+    
+    public ArrayList<Pallet> getDeliveredToCustomer(String customer_name){
+    	String sql = 
+    				"	SELECT *\n"
+    			+	"	FROM " + TABLE_CUSTOMERS + " INNER JOIN " + TABLE_ORDERS + " USING (" + KEYWORD_CUSTOMER_NAME + ", " + KEYWORD_CUSTOMER_ADDRESS + ")\n"
+    			+	" 	INNER JOIN " + TABLE_PALLET_ORDERS + " USING (" + KEYWORD_ORDER_ID + ")\n"
+    			+	" 	INNER JOIN " + TABLE_PALLETS + " USING (" + KEYWORD_PALLET_ORDER_ID + ")\n"
+    			+	" 	WHERE " + KEYWORD_CUSTOMER_NAME + " = '" + customer_name + "';";
+    	
+    	Statement st;
+    	ResultSet rs;
+    	
+    	try {
+    		st = conn.createStatement();
+    		rs = st.executeQuery(sql);
+    		
+    		ArrayList<Pallet> pallets = new ArrayList<Pallet>();
+    		
+    		while (rs.next()){
+    			pallets.add(new Pallet(rs));
+    		}
+    		
+    		if(pallets.isEmpty()) {
+    			return null;
+    		}
+    		
+    		return pallets;
+    	}catch(SQLException e){
+    		e.printStackTrace();
+    	}
+    	
+    	return null;
+    }
+}

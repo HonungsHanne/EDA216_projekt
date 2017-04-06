@@ -1,4 +1,6 @@
 import java.sql.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -356,10 +358,16 @@ public class Database {
     		return false;
     	}
     	
+    	Calendar now = Calendar.getInstance();
+        now.add(Calendar.MINUTE, 10);
+        
+    	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    	String sqlTimestamp = dateFormat.format(now.getTime());
+    	
     	String sql =
 				"INSERT INTO " + TABLE_PALLETS + " "
 			+	"(" + KEYWORD_PALLET_ID + ", " + KEYWORD_TIMESTAMP + ", " + KEYWORD_RECIPE_NAME + ", " + KEYWORD_PALLET_ORDER_ID + ") "
-			+	"VALUES (NULL, DATEADD(day, 10, GETDATE()), '" + productName + "', 0);";
+			+	"VALUES (NULL, '" + sqlTimestamp + "', '" + productName + "', 0);";
     	
     	boolean failed = false;
     	

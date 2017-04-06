@@ -82,7 +82,7 @@ public class Blocking {
 		lblProductName.setBounds(10, 13, 102, 15);
 		
 		Label lblNewLabel = new Label(shlBlockingPallets, SWT.NONE);
-		lblNewLabel.setFont(SWTResourceManager.getFont("Segoe UI", 28, SWT.NORMAL));
+		lblNewLabel.setFont(SWTResourceManager.getFont("Segoe UI", 16, SWT.NORMAL));
 		lblNewLabel.setBounds(10, 201, 414, 60);
 		
 		btnNewButton = new Button(shlBlockingPallets, SWT.NONE);
@@ -97,7 +97,7 @@ public class Blocking {
 				int blockedPallets = db.blockPallets(startTime, stopTime, productName);
 				
 				if(blockedPallets > 0) {
-					lblNewLabel.setText("" + blockedPallets);
+					lblNewLabel.setText("Number of pallets blocked: " + blockedPallets);
 				}
 				
 				else {
