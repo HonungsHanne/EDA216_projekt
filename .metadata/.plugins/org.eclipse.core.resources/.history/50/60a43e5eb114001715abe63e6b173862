@@ -1,7 +1,0 @@
-public class GUI {
-	private Database database;
-	
-	public GUI(Database database) {
-		
-	}
-}

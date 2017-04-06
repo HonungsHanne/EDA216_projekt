@@ -21,6 +21,7 @@
 	</section>
 	<section name="OptionalMessageDialog.hide.">
 		<item value="true" key="org.eclipse.jdt.ui.typecomment.deprecated"/>
+		<item value="true" key="RunnableJar.export.ipwarning"/>
 	</section>
 	<section name="DialogBounds_GetterSetterTreeSelectionDialog">
 		<item value="528" key="DIALOG_WIDTH"/>
@@ -32,6 +33,22 @@
 	<section name="RefactoringWizard.preview">
 		<item value="600" key="width"/>
 		<item value="400" key="height"/>
+	</section>
+	<section name="FatJarPackageWizard">
+		<item value="C:\Users\Hanne\Documents\GitHub\EDA216_projekt" key="FatJarPackageWizardPage.ANTSCRIPT_LOCATION"/>
+		<item value="Blocking - EDA216" key="FatJarPackageWizardPage.LAUNCH_CONFIGURATION_SELECTION_NAME"/>
+		<item value="C:\Users\Hanne\Documents\GitHub\EDA216_projekt\executables\Blocked.jar" key="FatJarPackageWizardPage.DESTINATION_PATH_SELECTION"/>
+		<item value="false" key="FatJarPackageWizardPage.ANTSCRIPT_SAVE"/>
+		<item value="1" key="FatJarPackageWizardPage.LIBRARY_HANDLING"/>
+		<list key="FatJarPackageWizardPage.DESTINATION_NAMES_ID">
+			<item value="C:\Users\Hanne\Documents\GitHub\EDA216_projekt\executables\Blocked.jar"/>
+			<item value="C:\Users\Hanne\Documents\GitHub\EDA216_projekt\executables\Production.jar"/>
+			<item value="C:\Users\Hanne\Documents\GitHub\EDA216_projekt\executables\Search.jar"/>
+		</list>
+		<list key="FatJarPackageWizardPage.ANTSCRIPT_LOCATION_HISTORY">
+			<item value="C:\Users\Hanne\Documents\GitHub\EDA216_projekt.xml"/>
+			<item value=".xml"/>
+		</list>
 	</section>
 	<section name="SourceActionDialog.methods">
 		<item value="false" key="SynchronizedModifier"/>
